@@ -58,4 +58,32 @@ export const useApp = create<useAppStore>((set) => ({
       toast.error("Failed to logout");
     }
   },
+  addExperience: async (formData) => {
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/api/user/add-experience`,
+        formData,
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        toast.success(response.data.msg);
+      }
+    } catch (error) {
+      toast.error("Failed to add experience");
+    }
+  },
+  updateProfile: async (formData) => {
+    try {
+      const response = await axios.put(
+        `${BACKEND_URL}/api/user/profile-update`,
+        formData,
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        toast.success(response.data.msg);
+      }
+    } catch (error) {
+      toast.error("Failed to update profile");
+    }
+  }
 }));

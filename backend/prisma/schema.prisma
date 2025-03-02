@@ -9,12 +9,28 @@ datasource db {
 }
 
 model User {
-  id        Int    @id @default(autoincrement())
-  firstName String
-  lastName  String
-  email     String @unique
-  password  String
-  role      Role   @default(talent)
+  id             Int              @id @default(autoincrement())
+  firstName      String
+  lastName       String
+  email          String           @unique
+  password       String
+  role           Role             @default(talent)
+  skills         String[]
+  workExperience WorkExperience[]
+}
+
+model WorkExperience {
+  id                 Int     @id @default(autoincrement())
+  company            String
+  title              String
+  fromMonth          String
+  fromYear           String
+  isCurrentlyWorking Boolean @default(false)
+  toMonth            String?
+  toYear             String?
+  description        String?
+  userId             Int
+  user               User    @relation(fields: [userId], references: [id])
 }
 
 enum Role {

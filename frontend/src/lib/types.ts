@@ -13,7 +13,31 @@ export type User = {
   lastName: string;
   email: string;
   role: string;
+  skills: string[];
+  workExperience: ExperienceType[];
 };
+export type addExperienceType = {
+  company: string;
+  title: string;
+  fromMonth: string;
+  fromYear: string;
+  isCurrentlyWorking: boolean;
+  toMonth: string;
+  toYear: string;
+  description: string;
+};
+
+export type ExperienceType = {
+  id: number;
+  userId: number;
+} & addExperienceType;
+
+export type updateProfile = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  skills: string[]
+}
 
 export type useAppStore = {
   user: User | null;
@@ -21,4 +45,6 @@ export type useAppStore = {
   login: (formData: loginType) => void;
   fetchUser: () => void;
   logout: () => void;
+  addExperience: (formData: addExperienceType) => void;
+  updateProfile: (formData: updateProfile) => void;
 };

@@ -7,6 +7,7 @@ import Login from './pages/Login'
 import { Toaster } from './components/ui/sonner'
 import { useApp } from './stores/useApp'
 import { useEffect } from 'react'
+import Profile from './pages/Profile'
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/profile' element={<Profile />}/>
       </Routes>
       <Toaster position='top-center' />
     </div>

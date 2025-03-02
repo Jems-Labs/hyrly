@@ -1,6 +1,11 @@
 import { Context } from "hono";
 import { prismaClient } from "../utils/prisma";
-import { loginSchema, signupSchema } from "../utils/zodSchemas";
+import {
+  addExperienceSchema,
+  loginSchema,
+  profileUpdateSchema,
+  signupSchema,
+} from "../utils/zodSchemas";
 import bcrypt from "bcryptjs";
 import { generateTokenAndSetCookie, removeToken } from "../utils/generateToken";
 export async function handleUserSignup(c: Context) {
@@ -89,6 +94,8 @@ export const handleFetchUser = async (c: Context) => {
         lastName: true,
         email: true,
         role: true,
+        skills: true,
+        workExperience: true,
       },
     });
     if (!user) return c.json({ msg: "User doesn't exists" }, 400);
@@ -106,3 +113,89 @@ export const handleUserLogout = async (c: Context) => {
     return c.json({ msg: "Internal Server Error" }, 500);
   }
 };
+
+export const handleAddExperience = async (c: Context) => {
+  const prisma = prismaClient(c);
+  const { id } = c.get("user");
+  try {
+    const data = await c.req.json();
+    const validatedData = addExperienceSchema.safeParse(data);
+    if (!validatedData.success) {
+      return c.json(
+        {
+          msg: "Invalid inputs",
+        },
+        400
+      );
+    }
+    const {
+      company,
+      title,
+      fromMonth,
+      fromYear,
+      isCurrentlyWorking,
+      toMonth,
+      toYear,
+      description,
+    } = validatedData.data;
+
+    const newExperience = await prisma.workExperience.create({
+      data: {
+        company,
+        title,
+        fromMonth,
+        fromYear,
+        isCurrentlyWorking,
+        toMonth,
+        toYear,
+        description,
+        userId: id,
+      },
+    });
+    if (!newExperience) {
+      return c.json({ msg: "Failed to add experience" }, 400);
+    }
+
+    return c.json({ msg: "Added new experience" }, 200);
+  } catch (error) {
+    return c.json({ msg: "Internal Server Error" }, 500);
+  }
+};
+
+export const handleUpdateProfile = async (c: Context) => {
+  const prisma = prismaClient(c);
+  const { id } = c.get("user");
+  try {
+    const data = await c.req.json();
+    const validatedData = profileUpdateSchema.safeParse(data);
+    if (!validatedData.success) {
+      return c.json(
+        {
+          msg: "Invalid inputs",
+        },
+        400
+      );
+    }
+    const {
+      firstName,
+      lastName,
+      email,
+      skills
+    } = validatedData.data;
+
+    await prisma.user.update({
+      where: {id},
+      data: {
+        firstName,
+        lastName,
+        email,
+        skills
+      }
+    })
+    
+
+    return c.json({ msg: "Profile Updated" }, 200);
+  } catch (error) {
+    return c.json({ msg: "Internal Server Error" }, 500);
+  }
+}
