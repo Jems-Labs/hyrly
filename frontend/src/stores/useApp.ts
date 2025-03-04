@@ -85,5 +85,34 @@ export const useApp = create<useAppStore>((set) => ({
     } catch (error) {
       toast.error("Failed to update profile");
     }
-  }
+  },
+  updateExperience: async (formData, id) => {
+    try {
+      const response = await axios.put(
+        `${BACKEND_URL}/api/user/experience-update/${id}`,
+        formData,
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        toast.success(response.data.msg);
+      }
+    } catch (error) {
+      toast.error("Failed to update work experience");
+    }
+  },
+  deleteExperience: async (id) => {
+    try {
+      const res = await axios.delete(
+        `${BACKEND_URL}/api/user/delete-experience/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.status) {
+        toast.success("Deleted");
+      }
+    } catch (error) {
+      toast.error("Failed to delete");
+    }
+  },
 }));

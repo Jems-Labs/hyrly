@@ -176,26 +176,87 @@ export const handleUpdateProfile = async (c: Context) => {
         400
       );
     }
-    const {
-      firstName,
-      lastName,
-      email,
-      skills
-    } = validatedData.data;
+    const { firstName, lastName, email, skills } = validatedData.data;
 
     await prisma.user.update({
-      where: {id},
+      where: { id },
       data: {
         firstName,
         lastName,
         email,
-        skills
-      }
-    })
-    
+        skills,
+      },
+    });
 
     return c.json({ msg: "Profile Updated" }, 200);
   } catch (error) {
     return c.json({ msg: "Internal Server Error" }, 500);
   }
-}
+};
+
+export const handleUpdateExperience = async (c: Context) => {
+  const prisma = prismaClient(c);
+  const { id } = c.get("user");
+  const experienceId = parseInt(c.req.param("id"));
+
+  if (!experienceId) {
+    return c.json({ msg: "Work Experience Id is required" }, 400);
+  }
+  try {
+    const data = await c.req.json();
+
+    const validatedData = addExperienceSchema.safeParse(data);
+    if (!validatedData.success) {
+      return c.json(
+        {
+          msg: "Invalid inputs",
+        },
+        400
+      );
+    }
+    const {
+      company,
+      title,
+      fromMonth,
+      fromYear,
+      isCurrentlyWorking,
+      toMonth,
+      toYear,
+      description,
+    } = validatedData.data;
+
+    await prisma.workExperience.update({
+      where: {
+        id: experienceId,
+        userId: id,
+      },
+      data: {
+        company,
+        title,
+        fromMonth,
+        fromYear,
+        isCurrentlyWorking,
+        toMonth,
+        toYear,
+        description,
+      },
+    });
+    return c.json({ msg: "Updated the work experience" }, 200);
+  } catch (error) {
+    return c.json({ msg: "Internal Server Error" }, 500);
+  }
+};
+
+export const handleDeleteExperience = async (c: Context) => {
+  const prisma = prismaClient(c);
+  const { id } = c.get("user");
+  const experienceId = parseInt(c.req.param("id"));
+  try {
+    await prisma.workExperience.delete({
+      where: { id: experienceId, userId: id },
+    });
+    return c.json({ msg: "Deleted work experience" }, 200);
+  } catch (error) {
+    return c.json({ msg: "Internal Server Error" }, 500);
+  }
+};

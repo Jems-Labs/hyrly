@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { useApp } from "@/stores/useApp";
 import WorkExperience from "@/components/WorkExperience";
 import { Loader2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import AddWorkExperience from "@/components/AddWorkExperience";
 
 function Profile() {
   const { user, updateProfile } = useApp();
@@ -56,91 +58,104 @@ function Profile() {
     setIsLoading(true);
     await updateProfile(formData);
     setIsLoading(false);
-  }
+  };
 
   return (
     <div>
-      <div className="p-6">
-        <div className="border rounded-t-lg px-4 py-4 flex justify-between gap-6 shadow-sm">
-          <div className="flex items-center gap-6">
-            <Avatar className="h-24 w-24 cursor-pointer">
-              <AvatarFallback className="text-lg">
-                {user?.firstName?.[0]?.toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col gap-4">
-              <div className="flex gap-2">
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="firstName">First Name</Label>
-                  <Input
-                    id="firstName"
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                  />
+      {user ? (
+        <div className="p-6">
+          <div className="border rounded-t-lg px-4 py-4 flex justify-between gap-6 shadow-sm">
+            <div className="flex items-center gap-6">
+              <Avatar className="h-24 w-24 cursor-pointer">
+                <AvatarFallback className="text-lg">
+                  {user?.firstName?.[0]?.toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col gap-4">
+                <div className="flex gap-2">
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="firstName">First Name</Label>
+                    <Input id="firstName" value={formData.firstName} onChange={handleInputChange} />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="lastName">Last Name</Label>
+                    <Input id="lastName" value={formData.lastName} onChange={handleInputChange} />
+                  </div>
                 </div>
                 <div className="flex flex-col gap-2">
-                  <Label htmlFor="lastName">Last Name</Label>
-                  <Input
-                    id="lastName"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                  />
+                  <Label htmlFor="email">Email</Label>
+                  <Input id="email" value={formData.email} onChange={handleInputChange} />
                 </div>
               </div>
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
+            </div>
+            <div className="flex gap-2">
+              <Button onClick={handleUpdate} disabled={isLoading}>
+                {isLoading ? (
+                  <>
+                    <Loader2 className="animate-spin" /> Updating...
+                  </>
+                ) : (
+                  "Update"
+                )}
+              </Button>
+              <Button variant="outline">See public view</Button>
+            </div>
+          </div>
+
+          <div className="border px-4 py-4">
+            <h1 className="text-xl font-semibold">Skills</h1>
+            <div className="flex gap-2 mt-3">
+              <Input placeholder="Add a skill..." value={newSkill} onChange={(e) => setNewSkill(e.target.value)} />
+              <Button onClick={addSkill}>Add</Button>
+            </div>
+
+            <div className="flex flex-wrap gap-2 mt-3">
+              {skills.map((skill, index) => (
+                <Badge key={index} className="cursor-pointer" onClick={() => removeSkill(skill)}>
+                  {skill} ✕
+                </Badge>
+              ))}
+            </div>
+          </div>
+
+          <div className="border px-4 py-4 rounded-b-lg">
+            <div className="flex justify-between">
+              <h1 className="text-xl font-semibold">Work Experience</h1>
+              <AddWorkExperience />
+            </div>
+            {user?.workExperience.map((experience) => {
+              return (
+                <WorkExperience experience={experience} />
+
+              )
+            })}
+          </div>
+        </div>
+      ) : (
+        <div className="p-6">
+          <div className="border rounded-t-lg px-4 py-4 flex justify-between gap-6 shadow-sm">
+            <div className="flex items-center gap-6">
+              <Skeleton className="h-24 w-24 rounded-full" />
+              <div className="flex flex-col gap-4 w-full">
+                <Skeleton className="h-6 w-1/2" />
+                <Skeleton className="h-6 w-1/3" />
               </div>
             </div>
           </div>
-          <div className="flex gap-2">
-            <Button onClick={handleUpdate} disabled={isLoading}>
-              {isLoading ? (
-                <>
-                  {" "}
-                  <Loader2 className="animate-spin" />
-                  Updating...
-                </>
-              ) : (
-                "Update"
-              )}
-            </Button>
-            <Button variant="outline">See public view</Button>
+          <div className="border px-4 py-4 mt-4">
+            <Skeleton className="h-6 w-32" />
+            <div className="flex gap-2 mt-3">
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-24" />
+            </div>
+            <div className="flex flex-wrap gap-2 mt-3">
+              {[...Array(3)].map((_, index) => (
+                <Skeleton key={index} className="h-8 w-20" />
+              ))}
+            </div>
           </div>
         </div>
-
-        <div className="border px-4 py-4">
-          <h1 className="text-xl font-semibold">Skills</h1>
-          <div className="flex gap-2 mt-3">
-            <Input
-              placeholder="Add a skill..."
-              value={newSkill}
-              onChange={(e) => setNewSkill(e.target.value)}
-            />
-            <Button onClick={addSkill}>Add</Button>
-          </div>
-
-          <div className="flex flex-wrap gap-2 mt-3">
-            {skills.map((skill, index) => (
-              <Badge
-                key={index}
-                className="cursor-pointer"
-                onClick={() => removeSkill(skill)}
-              >
-                {skill} ✕
-              </Badge>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <WorkExperience  experiences={user?.workExperience || []} />
-        </div>
-      </div>
+      )}
     </div>
   );
 }

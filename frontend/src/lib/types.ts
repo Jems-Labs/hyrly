@@ -36,8 +36,8 @@ export type updateProfile = {
   firstName: string;
   lastName: string;
   email: string;
-  skills: string[]
-}
+  skills: string[];
+};
 
 export type useAppStore = {
   user: User | null;
@@ -47,4 +47,6 @@ export type useAppStore = {
   logout: () => void;
   addExperience: (formData: addExperienceType) => void;
   updateProfile: (formData: updateProfile) => void;
+  updateExperience: (formData: addExperienceType, id: number) => void;
+  deleteExperience: (id: number) => void;
 };
