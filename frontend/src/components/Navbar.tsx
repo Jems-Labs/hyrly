@@ -3,7 +3,7 @@ import logo from "/hyrly_nobg.png";
 import { Button } from "./ui/button";
 import { useApp } from "@/stores/useApp";
 import { Avatar, AvatarFallback } from "./ui/avatar";
-import { Bell, ChevronDown, LogOut, User } from "lucide-react";
+import { Bell, ChevronDown, ClipboardList, LogOut, User } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 
@@ -59,6 +59,10 @@ function Navbar() {
                   <User className="w-4 h-4" />
                   Profile
                 </Link>
+                {user?.role === "client" && <Link className="flex items-center gap-2 px-3 py-2 cursor-pointer rounded-md hover:bg-secondary" to={'/posted-tasks'}>
+                  <ClipboardList className="w-4 h-4" />
+                  Posted Tasks
+                </Link>}
                 <li
                   className="flex items-center gap-2 px-3 py-2 border-t cursor-pointer hover:bg-secondary rounded-md"
                   onClick={logout}

@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import Profile from "./pages/Profile";
 import ClientProtect from "./lib/ClientProtect";
 import PostTask from "./pages/PostTask";
+import PostedTasks from "./pages/PostedTasks";
 
 function App() {
   const { fetchUser } = useApp();
@@ -31,6 +32,14 @@ function App() {
           element={
             <ClientProtect>
               <PostTask />
+            </ClientProtect>
+          }
+        />
+        <Route
+          path="/posted-tasks"
+          element={
+            <ClientProtect>
+              <PostedTasks />
             </ClientProtect>
           }
         />

@@ -44,8 +44,8 @@ export type taskType = {
   status: string;
   clientId: number;
   user: User;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: any;
+  updatedAt: any;
 } & postTaskType;
 
 export type postTaskType = {
@@ -66,4 +66,7 @@ export type useAppStore = {
   updateExperience: (formData: addExperienceType, id: number) => void;
   deleteExperience: (id: number) => void;
   postTask: (formData: postTaskType) => void;
+  fetchPostedTasks: () => Promise<taskType[]>;
+  updateTaskStatus: (status: string, id: number) => void;
+  deleteTask: (id: number) => void;
 };

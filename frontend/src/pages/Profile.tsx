@@ -123,7 +123,7 @@ function Profile() {
               <h1 className="text-xl font-semibold">Work Experience</h1>
               <AddWorkExperience />
             </div>
-            {user?.workExperience.map((experience) => {
+            {user?.workExperience?.map((experience) => {
               return (
                 <WorkExperience experience={experience} />
 

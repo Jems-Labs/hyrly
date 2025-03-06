@@ -129,4 +129,44 @@ export const useApp = create<useAppStore>((set) => ({
       toast.error("Failed to post task");
     }
   },
+  fetchPostedTasks: async () => {
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/api/task/my-posted-tasks`,
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        return response.data || []
+      }
+    } catch (error) {
+      return []
+    }
+  },
+  updateTaskStatus: async (status, id) => {
+    try {
+      const response = await axios.put(
+        `${BACKEND_URL}/api/task/change-task-status/${id}`,
+        {status: status},
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        toast.success(response.data.msg);
+      }
+    } catch (error) {
+      toast.error("Failed to update task status");
+    }
+  },
+  deleteTask: async (id) => {
+    try {
+      const response = await axios.delete(`${BACKEND_URL}/api/task/delete-task/${id}`, {
+        withCredentials: true
+      });
+
+      if(response.status === 200){
+        toast.success(response.data.msg)
+      }
+    } catch (error) {
+      toast.error("Failed to delete task")
+    }
+  }
 }));
