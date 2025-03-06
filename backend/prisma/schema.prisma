@@ -17,6 +17,9 @@ model User {
   role           Role             @default(talent)
   skills         String[]
   workExperience WorkExperience[]
+  postedTasks    Task[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
 }
 
 model WorkExperience {
@@ -33,7 +36,34 @@ model WorkExperience {
   user               User    @relation(fields: [userId], references: [id])
 }
 
+model Task {
+  id          Int        @id @default(autoincrement())
+  title       String
+  description String     @db.Text
+  status      TaskStatus @default(open)
+  clientId    Int
+  client      User       @relation(fields: [clientId], references: [id])
+  skills      String[]
+  reward      RewardType
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 enum Role {
   talent
   client
+}
+
+enum TaskStatus {
+  open
+  closed
+}
+
+enum RewardType {
+  full_time_job
+  interview
+  internship
+  cash_prize
+  recognition
 }

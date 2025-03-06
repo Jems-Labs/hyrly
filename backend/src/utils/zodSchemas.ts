@@ -4,7 +4,7 @@ export const signupSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
   email: z.string().email(),
-  password: z.string(),
+  password: z.string().min(6),
   role: z.string(),
 });
 export const loginSchema = z.object({
@@ -29,4 +29,11 @@ export const profileUpdateSchema = z.object({
   lastName: z.string(),
   email: z.string().email(),
   skills: z.array(z.string()),
+})
+
+export const createTaskSchema = z.object({
+  title: z.string(),
+  description: z.any(),
+  skills: z.array(z.string()),
+  reward: z.any()
 })

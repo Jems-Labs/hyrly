@@ -15,6 +15,7 @@ export type User = {
   role: string;
   skills: string[];
   workExperience: ExperienceType[];
+  postedTasks: taskType[];
 };
 export type addExperienceType = {
   company: string;
@@ -38,6 +39,21 @@ export type updateProfile = {
   email: string;
   skills: string[];
 };
+export type taskType = {
+  id: number;
+  status: string;
+  clientId: number;
+  user: User;
+  createdAt: Date;
+  updatedAt: Date;
+} & postTaskType;
+
+export type postTaskType = {
+  title: string;
+  description: string;
+  skills: string[];
+  reward: string;
+};
 
 export type useAppStore = {
   user: User | null;
@@ -49,4 +65,5 @@ export type useAppStore = {
   updateProfile: (formData: updateProfile) => void;
   updateExperience: (formData: addExperienceType, id: number) => void;
   deleteExperience: (id: number) => void;
+  postTask: (formData: postTaskType) => void;
 };

@@ -115,4 +115,18 @@ export const useApp = create<useAppStore>((set) => ({
       toast.error("Failed to delete");
     }
   },
+  postTask: async (formData) => {
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/api/task/post`,
+        formData,
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        toast.success(response.data.msg);
+      }
+    } catch (error) {
+      toast.error("Failed to post task");
+    }
+  },
 }));

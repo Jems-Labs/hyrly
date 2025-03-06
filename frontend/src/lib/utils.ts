@@ -23,3 +23,10 @@ export const months = [
 export const years = Array.from({ length: 2026 - 1970 + 1 }, (_, i) =>
   (1970 + i).toString()
 );
+export const rewardOptions = [
+  { value: "full_time_job", label: "Full-Time Job", description: "Offer a job upon completion." },
+  { value: "interview", label: "Interview Opportunity", description: "Guarantee a future interview." },
+  { value: "internship", label: "Internship", description: "Provide an internship role." },
+  { value: "cash_prize", label: "Cash Prize", description: "Monetary reward for the best work." },
+  { value: "recognition", label: "Recognition", description: "Certificate or public appreciation." },
+];
