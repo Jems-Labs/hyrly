@@ -83,3 +83,119 @@ export async function handleCreateSubmission(c: Context) {
     return c.json({ msg: "Internal Server Error" }, 500);
   }
 }
+
+export async function handleGetAllSubmissions(c: Context) {
+  const taskId = parseInt(c.req.param("taskId"));
+  const prisma = prismaClient(c);
+  try {
+    if (isNaN(taskId)) {
+      return c.json({ success: false, msg: "Invalid task" }, 400);
+    }
+
+    const submissions = await prisma.submission.findMany({
+      where: {
+        taskId,
+      },
+      include: {
+        user: true,
+        task: true,
+      },
+    });
+    if (submissions.length === 0) {
+      return c.json({ success: false, msg: "No Submission found" }, 404);
+    }
+
+    return c.json({ success: true, submissions }, 200);
+  } catch (error) {
+    return c.json({ success: false, msg: "Internal Server Error" }, 500);
+  }
+}
+
+export async function handleAcceptSubmission(c: Context) {
+  const prisma = prismaClient(c);
+  const submissionId = parseInt(c.req.param("submissionId"));
+  const { id } = c.get("user");
+  if (isNaN(submissionId)) {
+    return c.json({ success: false, msg: "Invalid submission ID" }, 400);
+  }
+  try {
+    const submission = await prisma.submission.findUnique({
+      where: {
+        id: submissionId,
+      },
+      include: {
+        task: true,
+      },
+    });
+    if (!submission) {
+      return c.json({ success: false, msg: "Submission not found" }, 404);
+    }
+
+    if (!submission.task) {
+      return c.json({ success: false, msg: "Associated task not found" }, 404);
+    }
+
+    if (submission.task.clientId !== id) {
+      return c.json({ success: false, msg: "Unauthorized to do this" }, 400);
+    }
+    if (submission.status === "accepted") {
+      return c.json(
+        { success: false, msg: "Submission is already accepted" },
+        400
+      );
+    }
+    await prisma.submission.update({
+      where: {
+        id: submissionId,
+      },
+      data: {
+        status: "accepted",
+      },
+    });
+
+    return c.json({ success: true, msg: "Accepted the submission" }, 200);
+  } catch (error) {
+    return c.json({ success: false, msg: "Internal Server Error" }, 500);
+  }
+}
+export async function handleRejectSubmission(c: Context) {
+  const prisma = prismaClient(c);
+  const submissionId = parseInt(c.req.param("submissionId"));
+  const { id } = c.get("user");
+
+  if (isNaN(submissionId)) {
+    return c.json({ success: false, msg: "Invalid submission ID" }, 400);
+  }
+
+  try {
+    const submission = await prisma.submission.findUnique({
+      where: { id: submissionId },
+      include: { task: true },
+    });
+
+    if (!submission) {
+      return c.json({ success: false, msg: "Submission not found" }, 404);
+    }
+
+    if (!submission.task) {
+      return c.json({ success: false, msg: "Associated task not found" }, 404);
+    }
+
+    if (submission.task.clientId !== id) {
+      return c.json({ success: false, msg: "Unauthorized to reject this submission" }, 403);
+    }
+
+    if (submission.status === "rejected") {
+      return c.json({ success: false, msg: "Submission is already rejected" }, 400);
+    }
+
+    await prisma.submission.update({
+      where: { id: submissionId },
+      data: { status: "rejected" },
+    });
+
+    return c.json({ success: true, msg: "Rejected the submission" }, 200);
+  } catch (error) {
+    return c.json({ success: false, msg: "Internal Server Error" }, 500);
+  }
+}

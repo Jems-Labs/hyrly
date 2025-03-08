@@ -58,7 +58,20 @@ export type postTaskType = {
 export type createSubmissionType = {
   demoLinks: string[];
   description: string;
-}
+};
+export type submissionType = {
+  id: number;
+  taskId: number;
+  userId: number;
+  task: taskType;
+  user: User;
+
+  rating?: number;
+  feedback?: string;
+  status: string;
+  createdAt: any;
+  updatedAt: any;
+} & createSubmissionType;
 
 export type useAppStore = {
   user: User | null;
@@ -75,6 +88,14 @@ export type useAppStore = {
   updateTaskStatus: (status: string, id: number) => void;
   deleteTask: (id: number) => void;
   fetchOpenTasks: () => Promise<taskType[]>;
-  fetchTask: (id: string|undefined) => Promise<taskType | null>;
-  createSubmisson: (id: string|undefined, formData: createSubmissionType) => void;
+  fetchTask: (id: string | undefined) => Promise<taskType | null>;
+  createSubmisson: (
+    id: string | undefined,
+    formData: createSubmissionType
+  ) => void;
+  fetchAllSubmissions: (
+    id: string | undefined
+  ) => Promise<{ success: true; submissions: submissionType[] | undefined }>;
+  acceptSubmission: (id: number | undefined) => void;
+  rejectSubmission: (id: number | undefined) => void;
 };

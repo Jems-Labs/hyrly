@@ -216,4 +216,56 @@ export const useApp = create<useAppStore>((set) => ({
       toast.error(errorMessage);
     }
   },
+  fetchAllSubmissions: async (id) => {
+
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/api/submission/all-submissions/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error) {
+      return null;
+    }
+  },
+  acceptSubmission: async (id) => {
+    try {
+      const res = await axios.put(
+        `${BACKEND_URL}/api/submission/accept-submission/${id}`,
+        {},
+        { withCredentials: true }
+      );
+      if(res.data.success === true){
+        toast.success(res.data.msg)
+      }else{
+        toast.error(res.data.msg)
+      }
+    } catch (error) {
+      //@ts-ignore
+      const errorMessage = error?.response?.data?.msg || "Failed to accept submission";
+      toast.error(errorMessage);
+    }
+  },
+  rejectSubmission: async (id) => {
+    try {
+      const res = await axios.put(
+        `${BACKEND_URL}/api/submission/reject-submission/${id}`,
+        {},
+        { withCredentials: true }
+      );
+      if(res.data.success === true){
+        toast.success(res.data.msg)
+      }else{
+        toast.error(res.data.msg)
+      }
+    } catch (error) {
+      //@ts-ignore
+      const errorMessage = error?.response?.data?.msg || "Failed to reject submission";
+      toast.error(errorMessage);
+    }
+  }
 }));

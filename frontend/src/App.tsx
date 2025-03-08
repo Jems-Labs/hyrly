@@ -14,6 +14,7 @@ import PostedTasks from "./pages/PostedTasks";
 import FindTask from "./pages/FindTask";
 import Task from "./pages/Task";
 import Submit from "./pages/Submit";
+import Submissions from "./pages/Submissions";
 
 function App() {
   const { fetchUser } = useApp();
@@ -49,6 +50,14 @@ function App() {
         <Route path="/find-task" element={<FindTask />} />
         <Route path="/task/:id" element={<Task />} />
         <Route path="/task/:id/submit" element={<Submit />} />
+        <Route
+          path="/task/:id/submissions"
+          element={
+            <ClientProtect>
+              <Submissions />
+            </ClientProtect>
+          }
+        />
       </Routes>
       <Toaster position="top-center" />
     </div>

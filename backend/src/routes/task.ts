@@ -18,4 +18,5 @@ taskRoutes.put("/change-task-status/:id", protectRoute, handleUpdateTaskStatus);
 taskRoutes.delete("/delete-task/:id", protectRoute, handleDeleteTask);
 taskRoutes.get("/open-tasks", protectRoute, handleGetOpenTasks);
 taskRoutes.get("/get-task/:id", protectRoute, handleGetTask);
+
 export default taskRoutes;

@@ -78,7 +78,7 @@ const PostedTask = ({ task }: { task: taskType }) => {
                 </p>
                 {task.description.length > 50 && (
                     <Button variant="link" className="p-0 text-blue-500 underline" onClick={toggleDescription}>
-                        {showFullDescription ? "Show Less" : "more"}
+                        {showFullDescription ? "Show Less" : "Show More"}
                     </Button>
                 )}
 
@@ -95,9 +95,12 @@ const PostedTask = ({ task }: { task: taskType }) => {
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
+                    <Link to={`/task/${task?.id}/submissions`}>
+                   
                     <Button>
                         <ExternalLink /> View Submissions
                     </Button>
+                    </Link>
                     <Button variant={"outline"} className="text-red-500" onClick={handleDeleteTask}>
                         <Trash />
                     </Button>
