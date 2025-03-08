@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import userRoutes from "./routes/user";
 import { cors } from "hono/cors";
 import taskRoutes from "./routes/task";
+import submissionRoutes from "./routes/submission";
 
 const app = new Hono();
 
@@ -20,5 +21,7 @@ app.use("*", (c, next) => {
 
 app.route("/api/user", userRoutes);
 app.route("/api/task", taskRoutes);
+app.route("/api/submission", submissionRoutes);
+
 
 export default app;

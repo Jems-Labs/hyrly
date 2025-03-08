@@ -136,17 +136,17 @@ export const useApp = create<useAppStore>((set) => ({
         { withCredentials: true }
       );
       if (response.status === 200) {
-        return response.data || []
+        return response.data || [];
       }
     } catch (error) {
-      return []
+      return [];
     }
   },
   updateTaskStatus: async (status, id) => {
     try {
       const response = await axios.put(
         `${BACKEND_URL}/api/task/change-task-status/${id}`,
-        {status: status},
+        { status: status },
         { withCredentials: true }
       );
       if (response.status === 200) {
@@ -158,15 +158,62 @@ export const useApp = create<useAppStore>((set) => ({
   },
   deleteTask: async (id) => {
     try {
-      const response = await axios.delete(`${BACKEND_URL}/api/task/delete-task/${id}`, {
-        withCredentials: true
-      });
+      const response = await axios.delete(
+        `${BACKEND_URL}/api/task/delete-task/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
 
-      if(response.status === 200){
-        toast.success(response.data.msg)
+      if (response.status === 200) {
+        toast.success(response.data.msg);
       }
     } catch (error) {
-      toast.error("Failed to delete task")
+      toast.error("Failed to delete task");
     }
-  }
+  },
+  fetchOpenTasks: async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/api/task/open-tasks`, {
+        withCredentials: true,
+      });
+
+      return response.data || [];
+    } catch (error) {
+      return [];
+    }
+  },
+  fetchTask: async (id) => {
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/api/task/get-task/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error) {
+      return null;
+    }
+  },
+  createSubmisson: async (id, formData) => {
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/api/submission/create-submission/${id}`,
+        formData,
+        { withCredentials: true }
+      );
+      if (response?.data?.success === true) {
+        toast.success(response.data.msg);
+      } else {
+        toast.error(response.data.msg);
+      }
+    } catch (error) {
+      //@ts-ignore
+      const errorMessage = error?.response?.data?.msg || "Failed to submit work";
+      toast.error(errorMessage);
+    }
+  },
 }));

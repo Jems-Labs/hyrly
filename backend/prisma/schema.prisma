@@ -18,8 +18,10 @@ model User {
   skills         String[]
   workExperience WorkExperience[]
   postedTasks    Task[]
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+  submissions    Submission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model WorkExperience {
@@ -37,17 +39,34 @@ model WorkExperience {
 }
 
 model Task {
-  id          Int        @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   title       String
-  description String     @db.Text
-  status      TaskStatus @default(open)
+  description String       @db.Text
+  status      TaskStatus   @default(open)
   clientId    Int
-  client      User       @relation(fields: [clientId], references: [id])
+  client      User         @relation(fields: [clientId], references: [id])
   skills      String[]
   reward      RewardType
+  submissions Submission[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Submission {
+  id          Int              @id @default(autoincrement())
+  taskId      Int
+  task        Task             @relation(fields: [taskId], references: [id])
+  userId      Int
+  user        User             @relation(fields: [userId], references: [id])
+  demoLinks   String[]
+  description String           @db.Text
+  rating      Float?
+  feedback    String?          @db.Text
+  status      SubmissionStatus @default(pending)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@unique([userId, taskId])
 }
 
 enum Role {
@@ -66,4 +85,10 @@ enum RewardType {
   internship
   cash_prize
   recognition
+}
+
+enum SubmissionStatus {
+  pending
+  accepted
+  rejected
 }

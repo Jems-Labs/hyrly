@@ -43,7 +43,7 @@ export type taskType = {
   id: number;
   status: string;
   clientId: number;
-  user: User;
+  client: User;
   createdAt: any;
   updatedAt: any;
 } & postTaskType;
@@ -54,6 +54,11 @@ export type postTaskType = {
   skills: string[];
   reward: string;
 };
+
+export type createSubmissionType = {
+  demoLinks: string[];
+  description: string;
+}
 
 export type useAppStore = {
   user: User | null;
@@ -69,4 +74,7 @@ export type useAppStore = {
   fetchPostedTasks: () => Promise<taskType[]>;
   updateTaskStatus: (status: string, id: number) => void;
   deleteTask: (id: number) => void;
+  fetchOpenTasks: () => Promise<taskType[]>;
+  fetchTask: (id: string|undefined) => Promise<taskType | null>;
+  createSubmisson: (id: string|undefined, formData: createSubmissionType) => void;
 };

@@ -22,7 +22,7 @@ function Navbar() {
           <ul className="flex items-center gap-4 text-md font-normal">
             {[
               { value: "Find task", link: "/find-task" },
-              { value: "Saved tasks", link: "/saved-tasks" },
+              { value: "Leaderboard", link: "/leaderboard" },
             ].map((li) => {
               const isActive = location.pathname === li.link;
               return (

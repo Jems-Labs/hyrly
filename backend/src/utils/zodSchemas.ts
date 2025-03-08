@@ -20,20 +20,24 @@ export const addExperienceSchema = z.object({
   isCurrentlyWorking: z.boolean(),
   toMonth: z.string().optional(),
   toYear: z.string().optional(),
-  description: z.string()
+  description: z.string(),
 });
-
 
 export const profileUpdateSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
   email: z.string().email(),
   skills: z.array(z.string()),
-})
+});
 
 export const createTaskSchema = z.object({
   title: z.string(),
   description: z.any(),
   skills: z.array(z.string()),
-  reward: z.any()
-})
+  reward: z.any(),
+});
+
+export const createSubmissionSchema = z.object({
+  demoLinks: z.array(z.string()),
+  description: z.any(),
+});

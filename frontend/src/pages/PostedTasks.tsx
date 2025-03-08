@@ -10,6 +10,7 @@ import { CalendarDays, ExternalLink, Trash, Trophy } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { rewardOptions } from "@/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Link } from "react-router-dom";
 
 const PostedTask = ({ task }: { task: taskType }) => {
     const { updateTaskStatus, deleteTask, user } = useApp();
@@ -31,7 +32,7 @@ const PostedTask = ({ task }: { task: taskType }) => {
     const handleDeleteTask = async () => {
         if (task?.id) {
             await deleteTask(task.id);
-            queryClient.invalidateQueries({queryKey: ["posted-tasks", user?.id]})
+            queryClient.invalidateQueries({ queryKey: ["posted-tasks", user?.id] })
         }
     }
 
@@ -62,9 +63,11 @@ const PostedTask = ({ task }: { task: taskType }) => {
                         </Select>
                     </div>
                 </div>
-                <CardTitle className="text-xl font-semibold">
-                    {task.title}
-                </CardTitle>
+                <Link to={`/task/${task?.id}`} className="hover:underline">
+                    <CardTitle className="text-xl font-semibold">
+                        {task.title}
+                    </CardTitle>
+                </Link>
             </CardHeader>
 
             <CardContent className="space-y-3">

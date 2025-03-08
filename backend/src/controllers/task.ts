@@ -91,16 +91,54 @@ export async function handleDeleteTask(c: Context) {
   const taskId = parseInt(c.req.param("id"));
   const { id } = c.get("user");
   try {
-
     if (isNaN(taskId)) {
       return c.json({ msg: "Invalid Task ID" }, 400);
     }
     await prisma.task.delete({
-      where: {id: taskId, clientId: id}
+      where: { id: taskId, clientId: id },
     });
 
-    return c.json({msg: "Task Deleted"}, 200);
+    return c.json({ msg: "Task Deleted" }, 200);
+  } catch (error) {
+    return c.json({ msg: "Internal Server Error" }, 500);
+  }
+}
 
+export async function handleGetOpenTasks(c: Context) {
+  const prisma = prismaClient(c);
+  try {
+    const tasks = await prisma.task.findMany({
+      where: { status: "open" },
+      include: {
+        client: true,
+      },
+    });
+    if (tasks.length === 0) {
+      return c.json({ msg: "No tasks found" }, 404);
+    }
+    return c.json(tasks, 200);
+  } catch (error) {
+    return c.json({ msg: "Internal Server Error" }, 500);
+  }
+}
+
+export async function handleGetTask(c: Context) {
+  const prisma = prismaClient(c);
+  const taskId = parseInt(c.req.param("id"));
+  try {
+    if (isNaN(taskId)) {
+      return c.json({ msg: "Invalid Task ID" }, 400);
+    }
+    const task = await prisma.task.findUnique({
+      where: { id: taskId },
+      include: {
+        client: true
+      }
+    });
+    if (!task) {
+      return c.json({ msg: "No task found" }, 400);
+    }
+    return c.json(task, 200);
   } catch (error) {
     return c.json({ msg: "Internal Server Error" }, 500);
   }
