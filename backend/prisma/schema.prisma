@@ -9,19 +9,20 @@ datasource db {
 }
 
 model User {
-  id             Int              @id @default(autoincrement())
-  firstName      String
-  lastName       String
-  email          String           @unique
-  password       String
-  role           Role             @default(talent)
-  skills         String[]
-  workExperience WorkExperience[]
-  postedTasks    Task[]
-  submissions    Submission[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                Int              @id @default(autoincrement())
+  firstName         String
+  lastName          String
+  email             String           @unique
+  password          String
+  role              Role             @default(talent)
+  skills            String[]
+  workExperience    WorkExperience[]
+  postedTasks       Task[]
+  submissions       Submission[]
+  points            Float?           @default(0.0)
+  sentNotifications Notification[]
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
 }
 
 model WorkExperience {
@@ -67,6 +68,14 @@ model Submission {
   updatedAt   DateTime         @updatedAt
 
   @@unique([userId, taskId])
+}
+
+model Notification {
+  id       Int    @id @default(autoincrement())
+  toId     Int
+  fromId   Int
+  fromUser User   @relation(fields: [fromId], references: [id])
+  message  String
 }
 
 enum Role {

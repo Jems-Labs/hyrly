@@ -30,6 +30,7 @@ export async function handleCreateSubmission(c: Context) {
       select: {
         status: true,
         clientId: true,
+        title: true,
       },
     });
 
@@ -62,19 +63,36 @@ export async function handleCreateSubmission(c: Context) {
         400
       );
     }
+    const transactionResults = await prisma.$transaction([
+      prisma.submission.create({
+        data: { userId, taskId, demoLinks, description },
+      }),
+      prisma.notification.create({
+        data: {
+          toId: taskExists.clientId,
+          fromId: userId,
+          message: `New submission received for task: "${taskExists.title}". Review it now!`,
+        },
+      }),
+      prisma.user.update({
+        where: { id: userId },
+        data: { points: { increment: 100 } },
+      }),
+      prisma.notification.create({
+        data: {
+          toId: userId,
+          fromId: taskExists.clientId,
+          message: `You earned 100 points for submitting to "${taskExists.title}".`,
+        },
+      }),
+    ]);
 
-    const newSubmission = await prisma.submission.create({
-      data: {
-        userId,
-        taskId,
-        demoLinks,
-        description,
-      },
-    });
-
-    if (!newSubmission)
-      return c.json({ success: false, msg: "Failed to submit" }, 400);
-
+    if (!transactionResults) {
+      return c.json(
+        { success: false, msg: "Failed to create submission" },
+        500
+      );
+    }
     return c.json(
       { success: true, msg: "Submission created successfully" },
       200
@@ -144,14 +162,23 @@ export async function handleAcceptSubmission(c: Context) {
         400
       );
     }
-    await prisma.submission.update({
-      where: {
-        id: submissionId,
-      },
-      data: {
-        status: "accepted",
-      },
-    });
+    const transactionResults = await prisma.$transaction([
+      prisma.submission.update({
+        where: { id: submissionId },
+        data: { status: "accepted" },
+      }),
+      prisma.notification.create({
+        data: {
+          toId: submission.userId,
+          fromId: id,
+          message: `Your submission for "${submission.task.title}" has been accepted! 🎉`,
+        },
+      }),
+    ]);
+
+    if (!transactionResults) {
+      return c.json({ success: false, msg: "Transaction failed" }, 500);
+    }
 
     return c.json({ success: true, msg: "Accepted the submission" }, 200);
   } catch (error) {
@@ -182,17 +209,36 @@ export async function handleRejectSubmission(c: Context) {
     }
 
     if (submission.task.clientId !== id) {
-      return c.json({ success: false, msg: "Unauthorized to reject this submission" }, 403);
+      return c.json(
+        { success: false, msg: "Unauthorized to reject this submission" },
+        403
+      );
     }
 
     if (submission.status === "rejected") {
-      return c.json({ success: false, msg: "Submission is already rejected" }, 400);
+      return c.json(
+        { success: false, msg: "Submission is already rejected" },
+        400
+      );
     }
 
-    await prisma.submission.update({
-      where: { id: submissionId },
-      data: { status: "rejected" },
-    });
+    const transactionResults = await prisma.$transaction([
+      prisma.submission.update({
+        where: { id: submissionId },
+        data: { status: "rejected" },
+      }),
+      prisma.notification.create({
+        data: {
+          toId: submission.userId,
+          fromId: id,
+          message: `Your submission for "${submission.task.title}" has been rejected. Keep improving! 🚀`,
+        },
+      }),
+    ]);
+
+    if (!transactionResults) {
+      return c.json({ success: false, msg: "Transaction failed" }, 500);
+    }
 
     return c.json({ success: true, msg: "Rejected the submission" }, 200);
   } catch (error) {

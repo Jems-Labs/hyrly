@@ -72,9 +72,16 @@ export type submissionType = {
   createdAt: any;
   updatedAt: any;
 } & createSubmissionType;
-
+export type notificationType = {
+  id: number;
+  toId: number;
+  fromId: number;
+  fromUser: User;
+  message: string;
+};
 export type useAppStore = {
   user: User | null;
+  notifications: notificationType[];
   signup: (formData: signupType) => void;
   login: (formData: loginType) => void;
   fetchUser: () => void;
@@ -98,4 +105,6 @@ export type useAppStore = {
   ) => Promise<{ success: true; submissions: submissionType[] | undefined }>;
   acceptSubmission: (id: number | undefined) => void;
   rejectSubmission: (id: number | undefined) => void;
+  fetchMyNotifications: () => void;
+  deleteNotification: (id: number | undefined) => void;
 };

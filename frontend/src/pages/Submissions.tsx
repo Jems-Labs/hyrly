@@ -16,7 +16,7 @@ function Submissions() {
       const data = await fetchAllSubmissions(id);
       return data.submissions;
     },
-    staleTime: 12000,
+    staleTime: 60000,
   });
 
   return (

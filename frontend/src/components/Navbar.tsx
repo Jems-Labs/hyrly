@@ -5,11 +5,13 @@ import { useApp } from "@/stores/useApp";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Bell, ChevronDown, ClipboardList, LogOut, User } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Badge } from "./ui/badge";
 
 
 function Navbar() {
   const navigate = useNavigate();
-  const { user, logout } = useApp();
+  const { user, logout, notifications } = useApp();
+
 
   return (
     <div className="border-b px-4 py-2 flex items-center justify-between">
@@ -27,7 +29,7 @@ function Navbar() {
               const isActive = location.pathname === li.link;
               return (
                 <Link
-                  className={`relative cursor-pointer transition-all duration-300 ease-in-out after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-[#18cb96] after:transition-all after:duration-300 hover:after:w-full ${isActive? "text-[#18cb96]": "text-white"}`}
+                  className={`relative cursor-pointer transition-all duration-300 ease-in-out after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-[#18cb96] after:transition-all after:duration-300 hover:after:w-full ${isActive ? "text-[#18cb96]" : "text-white"}`}
                   to={li.link}
                 >
                   {li.value}
@@ -40,9 +42,15 @@ function Navbar() {
       {user ? (
         <div className="flex items-center gap-5">
           {user.role === "client" ? <Button onClick={() => navigate('/post-task')}>Post a Task</Button> : ""}
+          <Link to={'/notifications'} className="relative inline-block">
+            <Bell size={23} className="cursor-pointer" />
+            <Badge className="absolute top-[-5px] right-[-5px] bg-red-500 text-white rounded-full h-5 w-5 text-xs flex items-center justify-center">
+              {notifications?.length}
+            </Badge>
+          </Link>
 
-          <Bell size={20} className="cursor-pointer" />
-          <Popover>
+
+          <Popover> 
             <PopoverTrigger asChild>
               <div className="flex items-center gap-1 cursor-pointer">
                 <Avatar className="cursor-pointer w-10 h-10">

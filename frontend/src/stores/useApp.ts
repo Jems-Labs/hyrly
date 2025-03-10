@@ -6,6 +6,7 @@ import { BACKEND_URL } from "@/lib/backend_url";
 
 export const useApp = create<useAppStore>((set) => ({
   user: null,
+  notifications: [],
   signup: async (formData) => {
     try {
       const res = await axios.post(`${BACKEND_URL}/api/user/signup`, formData, {
@@ -217,7 +218,6 @@ export const useApp = create<useAppStore>((set) => ({
     }
   },
   fetchAllSubmissions: async (id) => {
-
     try {
       const response = await axios.get(
         `${BACKEND_URL}/api/submission/all-submissions/${id}`,
@@ -239,10 +239,10 @@ export const useApp = create<useAppStore>((set) => ({
         {},
         { withCredentials: true }
       );
-      if(res.data.success === true){
-        toast.success(res.data.msg)
-      }else{
-        toast.error(res.data.msg)
+      if (res.data.success === true) {
+        toast.success(res.data.msg);
+      } else {
+        toast.error(res.data.msg);
       }
     } catch (error) {
       //@ts-ignore
@@ -257,15 +257,48 @@ export const useApp = create<useAppStore>((set) => ({
         {},
         { withCredentials: true }
       );
-      if(res.data.success === true){
-        toast.success(res.data.msg)
-      }else{
-        toast.error(res.data.msg)
+      if (res.data.success === true) {
+        toast.success(res.data.msg);
+      } else {
+        toast.error(res.data.msg);
       }
     } catch (error) {
       //@ts-ignore
       const errorMessage = error?.response?.data?.msg || "Failed to reject submission";
       toast.error(errorMessage);
     }
-  }
+  },
+  fetchMyNotifications: async () => {
+    try {
+      const res = await axios.get(`${BACKEND_URL}/api/user/notifications`, {
+        withCredentials: true,
+      });
+
+      if (res.status === 200 && Array.isArray(res.data)) {
+        set({ notifications: res.data });
+      } else {
+        set({ notifications: [] });
+      }
+    } catch (error) {
+      set({ notifications: [] });
+    }
+  },
+  deleteNotification: async (id) => {
+    try {
+      const res = await axios.delete(
+        `${BACKEND_URL}/api/user/notification/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (res.data.success === true) {
+        toast.success(res.data.msg);
+      } else {
+        toast.error(res.data.msg);
+      }
+    } catch (error) {
+      toast.error("Failed to delete notification");
+    }
+  },
 }));

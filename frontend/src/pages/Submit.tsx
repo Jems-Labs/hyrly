@@ -112,7 +112,7 @@ function Submit() {
           </div>
         </div>
         <div className="flex gap-2">
-          <Button>
+          <Button disabled={isLoading}>
             {isLoading ? (
               <>
                 <Loader2 className="animate-spin mr-2" /> Submitting...

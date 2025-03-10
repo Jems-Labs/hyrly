@@ -15,14 +15,15 @@ import FindTask from "./pages/FindTask";
 import Task from "./pages/Task";
 import Submit from "./pages/Submit";
 import Submissions from "./pages/Submissions";
+import Notifications from "./pages/Notifications";
 
 function App() {
-  const { fetchUser } = useApp();
+  const { fetchUser, fetchMyNotifications } = useApp();
 
   useEffect(() => {
     fetchUser();
+    fetchMyNotifications();
   }, []);
-
   return (
     <div>
       <Navbar />
@@ -58,6 +59,7 @@ function App() {
             </ClientProtect>
           }
         />
+        <Route path="/notifications" element={<Notifications />}/>
       </Routes>
       <Toaster position="top-center" />
     </div>

@@ -260,3 +260,50 @@ export const handleDeleteExperience = async (c: Context) => {
     return c.json({ msg: "Internal Server Error" }, 500);
   }
 };
+
+export const handleGetMyNotifications = async (c: Context) => {
+  const prisma = prismaClient(c);
+  const { id } = c.get("user");
+
+  try {
+    const notifications = await prisma.notification.findMany({
+      where: { toId: id },
+      include: {
+        fromUser: true,
+      },
+    });
+
+    if (notifications.length === 0) {
+      return c.json({ msg: "No notification found" }, 404);
+    }
+
+    return c.json(notifications, 200);
+  } catch (error) {
+    return c.json({ msg: "Internal Server Error" }, 500);
+  }
+};
+
+export async function handleDeleteNotification(c: Context) {
+  const prisma = prismaClient(c);
+  const id = parseInt(c.req.param("id"));
+  try {
+    if (isNaN(id)) {
+      return c.json({ success: false, msg: "No Id provided" }, 400);
+    }
+
+    const notification = await prisma.notification.findUnique({
+      where: { id },
+    });
+    if (!notification) {
+      return c.json({ success: false, msg: "No notification found" }, 404);
+    }
+
+    await prisma.notification.delete({
+      where: { id },
+    });
+
+    return c.json({ success: true, msg: "Notification Deleted" }, 200);
+  } catch (error) {
+    return c.json({ success: false, msg: "Internal Server Error" }, 500);
+  }
+}

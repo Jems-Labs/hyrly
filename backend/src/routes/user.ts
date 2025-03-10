@@ -2,7 +2,9 @@ import { Hono } from "hono";
 import {
   handleAddExperience,
   handleDeleteExperience,
+  handleDeleteNotification,
   handleFetchUser,
+  handleGetMyNotifications,
   handleUpdateExperience,
   handleUpdateProfile,
   handleUserLogin,
@@ -25,5 +27,6 @@ userRoutes.delete(
   protectRoute,
   handleDeleteExperience
 );
-
+userRoutes.get("/notifications", protectRoute, handleGetMyNotifications);
+userRoutes.delete("/notification/:id", protectRoute, handleDeleteNotification);
 export default userRoutes;
