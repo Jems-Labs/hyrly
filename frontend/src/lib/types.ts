@@ -39,22 +39,6 @@ export type updateProfile = {
   email: string;
   skills: string[];
 };
-export type taskType = {
-  id: number;
-  status: string;
-  clientId: number;
-  client: User;
-  createdAt: any;
-  updatedAt: any;
-} & postTaskType;
-
-export type postTaskType = {
-  title: string;
-  description: string;
-  skills: string[];
-  reward: string;
-};
-
 export type createSubmissionType = {
   demoLinks: string[];
   description: string;
@@ -66,12 +50,29 @@ export type submissionType = {
   task: taskType;
   user: User;
 
-  rating?: number;
+  rating?: number | null;
   feedback?: string;
   status: string;
   createdAt: any;
   updatedAt: any;
 } & createSubmissionType;
+export type taskType = {
+  id: number;
+  status: string;
+  clientId: number;
+  client: User;
+  submissions: submissionType[];
+  createdAt: any;
+  updatedAt: any;
+} & postTaskType;
+
+export type postTaskType = {
+  title: string;
+  description: string;
+  skills: string[];
+  reward: string;
+};
+
 export type notificationType = {
   id: number;
   toId: number;
@@ -107,4 +108,12 @@ export type useAppStore = {
   rejectSubmission: (id: number | undefined) => void;
   fetchMyNotifications: () => void;
   deleteNotification: (id: number | undefined) => void;
+  addFeedback: (
+    id: number | undefined,
+    formData: { rating: number; feedback: string }
+  ) => void;
+  fetchMySubmissions: () => Promise<{
+    success: true;
+    mySubmissions: submissionType[] | undefined;
+  }>;
 };

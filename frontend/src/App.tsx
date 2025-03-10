@@ -16,6 +16,7 @@ import Task from "./pages/Task";
 import Submit from "./pages/Submit";
 import Submissions from "./pages/Submissions";
 import Notifications from "./pages/Notifications";
+import MySubmissions from "./pages/MySubmissions";
 
 function App() {
   const { fetchUser, fetchMyNotifications } = useApp();
@@ -59,7 +60,8 @@ function App() {
             </ClientProtect>
           }
         />
-        <Route path="/notifications" element={<Notifications />}/>
+        <Route path="/notifications" element={<Notifications />} />
+        <Route path="/my-submissions" element={<MySubmissions />} />
       </Routes>
       <Toaster position="top-center" />
     </div>

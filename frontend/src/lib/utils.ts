@@ -30,3 +30,7 @@ export const rewardOptions = [
   { value: "cash_prize", label: "Cash Prize", description: "Monetary reward for the best work." },
   { value: "recognition", label: "Recognition", description: "Certificate or public appreciation." },
 ];
+export function getFaviconUrl(url: string) {
+  const domain = new URL(url).hostname;
+  return `https://www.google.com/s2/favicons?sz=32&domain=${domain}`;
+}

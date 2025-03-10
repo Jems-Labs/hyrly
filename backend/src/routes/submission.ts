@@ -2,8 +2,10 @@ import { Hono } from "hono";
 import { protectRoute } from "../utils/protectRoute";
 import {
   handleAcceptSubmission,
+  handleAddFeedback,
   handleCreateSubmission,
   handleGetAllSubmissions,
+  handleGetMySubmissions,
   handleRejectSubmission,
 } from "../controllers/submission";
 import { isUserClient } from "../utils/authorize";
@@ -34,5 +36,8 @@ submissionRoutes.put(
   isUserClient,
   handleRejectSubmission
 );
+submissionRoutes.put("/add-feedback/:submissionId", protectRoute, isUserClient, handleAddFeedback);
+submissionRoutes.get("/my-submissions", protectRoute, handleGetMySubmissions);
+
 
 export default submissionRoutes;

@@ -245,3 +245,86 @@ export async function handleRejectSubmission(c: Context) {
     return c.json({ success: false, msg: "Internal Server Error" }, 500);
   }
 }
+
+export async function handleAddFeedback(c: Context) {
+  const prisma = prismaClient(c);
+  const submissionId = parseInt(c.req.param("submissionId"));
+  const { id } = c.get("user");
+  const data = await c.req.json();
+  if (isNaN(submissionId)) {
+    return c.json({ success: false, msg: "Invalid submission ID" }, 400);
+  }
+
+  try {
+    const submission = await prisma.submission.findUnique({
+      where: { id: submissionId },
+      include: { task: true },
+    });
+
+    if (!submission) {
+      return c.json({ success: false, msg: "Submission not found" }, 404);
+    }
+
+    if (!submission.task) {
+      return c.json({ success: false, msg: "Associated task not found" }, 404);
+    }
+
+    if (submission.task.clientId !== id) {
+      return c.json(
+        {
+          success: false,
+          msg: "Unauthorized to add feedback to this submission",
+        },
+        403
+      );
+    }
+
+    const transactionResults = await prisma.$transaction([
+      prisma.submission.update({
+        where: { id: submissionId },
+        data: {
+          rating: data.rating,
+          feedback: data.feedback,
+        },
+      }),
+      prisma.notification.create({
+        data: {
+          toId: submission.userId,
+          fromId: id,
+          message: `Your submission for "${submission.task.title}" Got a feedback! 🚀`,
+        },
+      }),
+    ]);
+
+    if (!transactionResults) {
+      return c.json({ success: false, msg: "Transaction failed" }, 500);
+    }
+
+    return c.json({ success: true, msg: "Feedback Submitted" }, 200);
+  } catch (error) {
+    return c.json({ success: false, msg: "Internal Server Error" }, 500);
+  }
+}
+
+export async function handleGetMySubmissions(c: Context) {
+  const prisma = prismaClient(c);
+  const { id } = c.get("user");
+  try {
+    const mySubmissions = await prisma.submission.findMany({
+      where: { userId: id },
+      include: {
+        user: true,
+        task: true,
+      },
+    });
+
+    if(mySubmissions.length === 0){
+      return c.json({success: false, msg: "No submission found"}, 404);
+    };
+
+
+    return c.json({success: true, mySubmissions}, 200);
+  } catch (error) {
+    return c.json({ success: false, msg: "Internal Server Error" }, 500);
+  }
+}

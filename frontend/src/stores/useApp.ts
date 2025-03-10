@@ -212,9 +212,7 @@ export const useApp = create<useAppStore>((set) => ({
         toast.error(response.data.msg);
       }
     } catch (error) {
-      //@ts-ignore
-      const errorMessage = error?.response?.data?.msg || "Failed to submit work";
-      toast.error(errorMessage);
+      toast.error("Failed to submit work");
     }
   },
   fetchAllSubmissions: async (id) => {
@@ -245,9 +243,7 @@ export const useApp = create<useAppStore>((set) => ({
         toast.error(res.data.msg);
       }
     } catch (error) {
-      //@ts-ignore
-      const errorMessage = error?.response?.data?.msg || "Failed to accept submission";
-      toast.error(errorMessage);
+      toast.error("Failed to accept submission");
     }
   },
   rejectSubmission: async (id) => {
@@ -263,9 +259,7 @@ export const useApp = create<useAppStore>((set) => ({
         toast.error(res.data.msg);
       }
     } catch (error) {
-      //@ts-ignore
-      const errorMessage = error?.response?.data?.msg || "Failed to reject submission";
-      toast.error(errorMessage);
+      toast.error("Failed to reject submission");
     }
   },
   fetchMyNotifications: async () => {
@@ -299,6 +293,40 @@ export const useApp = create<useAppStore>((set) => ({
       }
     } catch (error) {
       toast.error("Failed to delete notification");
+    }
+  },
+  addFeedback: async (id, formData) => {
+    try {
+      const res = await axios.put(
+        `${BACKEND_URL}/api/submission/add-feedback/${id}`,
+        formData,
+        { withCredentials: true }
+      );
+      if (res.data.success === true) {
+        toast.success(res.data.msg);
+      } else {
+        toast.error(res.data.msg);
+      }
+    } catch (error) {
+      toast.error("Failed to add feedback");
+    }
+  },
+  fetchMySubmissions: async () => {
+    try {
+      const res = await axios.get(
+        `${BACKEND_URL}/api/submission/my-submissions`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (res.data.success === true) {
+        return res.data;
+      } else {
+        return [];
+      }
+    } catch (error) {
+      return [];
     }
   },
 }));

@@ -33,6 +33,8 @@ function Task() {
       navigate("/login");
     }
   }, [user]);
+
+  const isSubmitted = !!task?.submissions.find((submission) => submission?.userId === user?.id);
   return (
     <div className="px-16 py-10 flex gap-8">
       <div className="pr-8 w-3/4">
@@ -143,27 +145,30 @@ function Task() {
             )}
           </CardContent>
         </Card>
-
         <div className="flex flex-col gap-3 justify-center my-5">
           {isLoading ? (
             <Skeleton className="h-10 w-full" />
           ) : task?.status === "open" ? (
-            <Button
-              className="w-full"
-              onClick={() => navigate(`/task/${task?.id}/submit`)}
-            >
-              Submit Now
-            </Button>
+            isSubmitted ? (
+              <Button className="w-full cursor-pointer" variant="secondary" disabled>
+                Submitted
+              </Button>
+            ) : (
+              <Button className="w-full" onClick={() => navigate(`/task/${task?.id}/submit`)}>
+                Submit Now
+              </Button>
+            )
           ) : (
             <Button variant="destructive">Submissions Closed</Button>
           )}
         </div>
 
+
         <div className="text-red-500 flex gap-2 cursor-pointer">
           <Flag /> Flag as inappropriate
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 

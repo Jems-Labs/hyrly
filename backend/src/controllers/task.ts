@@ -132,7 +132,8 @@ export async function handleGetTask(c: Context) {
     const task = await prisma.task.findUnique({
       where: { id: taskId },
       include: {
-        client: true
+        client: true,
+        submissions: true
       }
     });
     if (!task) {
