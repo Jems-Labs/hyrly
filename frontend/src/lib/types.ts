@@ -13,9 +13,11 @@ export type User = {
   lastName: string;
   email: string;
   role: string;
-  skills: string[];
+  skills: string[] | undefined;
+  points: number;
   workExperience: ExperienceType[];
   postedTasks: taskType[];
+  submissions: submissionType[] | undefined;
 };
 export type addExperienceType = {
   company: string;
@@ -112,8 +114,7 @@ export type useAppStore = {
     id: number | undefined,
     formData: { rating: number; feedback: string }
   ) => void;
-  fetchMySubmissions: () => Promise<{
-    success: true;
-    mySubmissions: submissionType[] | undefined;
-  }>;
+  fetchMySubmissions: () => Promise<submissionType[]>;
+  fetchLeaderboard: () => Promise<User[]>;
+  fetchPublicUser: (id: string | undefined) => Promise<User | null>
 };

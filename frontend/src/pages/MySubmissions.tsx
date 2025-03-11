@@ -12,7 +12,7 @@ function MySubmissions() {
   const { fetchMySubmissions } = useApp();
   const { data } = useQuery({
     queryKey: ["my-submissions"],
-    queryFn: async () => (await fetchMySubmissions()).mySubmissions,
+    queryFn: async () => (await fetchMySubmissions()),
     staleTime: 6000,
   });
 

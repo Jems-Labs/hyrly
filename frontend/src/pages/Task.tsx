@@ -113,14 +113,14 @@ function Task() {
       </div>
 
       <div className="w-1/4">
-        <Card className="border rounded-lg">
-          <CardHeader className="border-b pb-5">
+        <Card className="border rounded-lg p-0">
+          <CardHeader className="border-b py-5">
             <p className="text-lg font-semibold flex items-center gap-2">
-              About the Client
+              Posted by
             </p>
           </CardHeader>
 
-          <CardContent className="px-4 flex flex-col gap-2">
+          <CardContent className="px-4 flex flex-col gap-2 pb-4">
             {isLoading ? (
               <Skeleton className="h-10 w-full" />
             ) : (

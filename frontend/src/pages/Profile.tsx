@@ -9,6 +9,7 @@ import WorkExperience from "@/components/WorkExperience";
 import { Loader2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import AddWorkExperience from "@/components/AddWorkExperience";
+import { Link } from "react-router-dom";
 
 function Profile() {
   const { user, updateProfile } = useApp();
@@ -75,16 +76,28 @@ function Profile() {
                 <div className="flex gap-2">
                   <div className="flex flex-col gap-2">
                     <Label htmlFor="firstName">First Name</Label>
-                    <Input id="firstName" value={formData.firstName} onChange={handleInputChange} />
+                    <Input
+                      id="firstName"
+                      value={formData.firstName}
+                      onChange={handleInputChange}
+                    />
                   </div>
                   <div className="flex flex-col gap-2">
                     <Label htmlFor="lastName">Last Name</Label>
-                    <Input id="lastName" value={formData.lastName} onChange={handleInputChange} />
+                    <Input
+                      id="lastName"
+                      value={formData.lastName}
+                      onChange={handleInputChange}
+                    />
                   </div>
                 </div>
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" value={formData.email} onChange={handleInputChange} />
+                  <Input
+                    id="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                  />
                 </div>
               </div>
             </div>
@@ -98,20 +111,30 @@ function Profile() {
                   "Update"
                 )}
               </Button>
-              <Button variant="outline">See public view</Button>
+              <Button variant="outline">
+                <Link to={`/user/${user?.id}`}>See public view</Link>
+              </Button>
             </div>
           </div>
 
           <div className="border px-4 py-4">
             <h1 className="text-xl font-semibold">Skills</h1>
             <div className="flex gap-2 mt-3">
-              <Input placeholder="Add a skill..." value={newSkill} onChange={(e) => setNewSkill(e.target.value)} />
+              <Input
+                placeholder="Add a skill..."
+                value={newSkill}
+                onChange={(e) => setNewSkill(e.target.value)}
+              />
               <Button onClick={addSkill}>Add</Button>
             </div>
 
             <div className="flex flex-wrap gap-2 mt-3">
               {skills.map((skill, index) => (
-                <Badge key={index} className="cursor-pointer" onClick={() => removeSkill(skill)}>
+                <Badge
+                  key={index}
+                  className="cursor-pointer"
+                  onClick={() => removeSkill(skill)}
+                >
                   {skill} ✕
                 </Badge>
               ))}
@@ -124,10 +147,7 @@ function Profile() {
               <AddWorkExperience />
             </div>
             {user?.workExperience?.map((experience) => {
-              return (
-                <WorkExperience experience={experience} />
-
-              )
+              return <WorkExperience experience={experience} />;
             })}
           </div>
         </div>

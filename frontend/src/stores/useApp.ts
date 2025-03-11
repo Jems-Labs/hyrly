@@ -321,7 +321,7 @@ export const useApp = create<useAppStore>((set) => ({
       );
 
       if (res.data.success === true) {
-        return res.data;
+        return res.data.mySubmissions;
       } else {
         return [];
       }
@@ -329,4 +329,33 @@ export const useApp = create<useAppStore>((set) => ({
       return [];
     }
   },
+  fetchLeaderboard: async () => {
+    try {
+      const res = await axios.get(`${BACKEND_URL}/api/user/leaderboard`, {
+        withCredentials: true,
+      });
+
+      if (res.data.success === true) {
+        return res.data.users;
+      } else {
+        return [];
+      }
+    } catch (error) {
+      return [];
+    }
+  },
+  fetchPublicUser: async (id) => {
+    try {
+      const res = await axios.get(`${BACKEND_URL}/api/user/public-user/${id}`, {
+        withCredentials: true,
+      });
+      if (res.data.success === true) {
+        return res.data.user;
+      }else{
+        return null;
+      }
+    } catch (error) {
+      return null
+    }
+  }
 }));

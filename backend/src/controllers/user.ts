@@ -6,7 +6,7 @@ import {
   profileUpdateSchema,
   signupSchema,
 } from "../utils/zodSchemas";
-import bcrypt from "bcryptjs";
+import bcrypt, { truncates } from "bcryptjs";
 import { generateTokenAndSetCookie, removeToken } from "../utils/generateToken";
 export async function handleUserSignup(c: Context) {
   const prisma = prismaClient(c);
@@ -303,6 +303,50 @@ export async function handleDeleteNotification(c: Context) {
     });
 
     return c.json({ success: true, msg: "Notification Deleted" }, 200);
+  } catch (error) {
+    return c.json({ success: false, msg: "Internal Server Error" }, 500);
+  }
+}
+
+export async function handleGetLeaderboard(c: Context) {
+  const prisma = prismaClient(c);
+  try {
+    const users = await prisma.user.findMany({
+      orderBy: {
+        points: "desc",
+      },
+    });
+
+    if (users.length === 0) {
+      return c.json({ msg: "User not found" }, 404);
+    }
+
+    return c.json({ success: true, users }, 200);
+  } catch (error) {
+    return c.json({ success: false, msg: "Internal Server Error" }, 500);
+  }
+}
+
+export async function handleGetPublicUser(c: Context) {
+  const prisma = prismaClient(c);
+  const id = parseInt(c.req.param("id"));
+
+  try {
+    if (!id) {
+      return c.json({ success: false, msg: "No id provided" }, 400);
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id },
+      include: {
+        workExperience: true,
+        postedTasks: true,
+        submissions: true,
+      },
+    });
+
+    if (!user) return c.json({ success: false, msg: "User doesn't exists" }, 400);
+    return c.json({success: true, user}, 200);
   } catch (error) {
     return c.json({ success: false, msg: "Internal Server Error" }, 500);
   }

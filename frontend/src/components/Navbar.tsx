@@ -63,20 +63,20 @@ function Navbar() {
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-2 shadow-md rounded-md">
               <ul className="text-sm">
-                <Link className="flex items-center gap-2 px-3 py-2 cursor-pointer rounded-md hover:bg-secondary" to={'/profile'}>
+                <Link className="flex items-center gap-2 px-3 py-2 cursor-pointer  hover:bg-secondary" to={'/profile'}>
                   <User className="w-4 h-4" />
                   Profile
                 </Link>
-                {user?.role === "client" && <Link className="flex items-center gap-2 px-3 py-2 cursor-pointer rounded-md hover:bg-secondary" to={'/posted-tasks'}>
+                {user?.role === "client" && <Link className="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-secondary" to={'/posted-tasks'}>
                   <ClipboardList className="w-4 h-4" />
                   Posted Tasks
                 </Link>}
-                <Link className="flex items-center gap-2 px-3 py-2 cursor-pointer rounded-md hover:bg-secondary" to={'/my-submissions'}>
+                <Link className="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-secondary" to={'/my-submissions'}>
                   <FileCheck className="w-4 h-4" />
                   My Submissions
                 </Link>
                 <li
-                  className="flex items-center gap-2 px-3 py-2 border-t cursor-pointer hover:bg-secondary rounded-md"
+                  className="flex items-center gap-2 px-3 py-2 border-t cursor-pointer hover:bg-secondary "
                   onClick={logout}
                 >
                   <LogOut className="w-4 h-4" />
