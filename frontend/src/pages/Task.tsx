@@ -20,7 +20,7 @@ function Task() {
     queryFn: async () => {
       if (!id) return;
       return await fetchTask(id);
-    },
+    },  
     staleTime: 12000,
   });
 

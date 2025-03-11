@@ -11,7 +11,7 @@ function Leaderboard() {
   const { data, isLoading } = useQuery({
     queryKey: ["leaderboard"],
     queryFn: fetchLeaderboard,
-    staleTime: 6000,
+    staleTime: 12000,
   });
 
   if (isLoading) return <Skeleton className="h-40 w-full" />;

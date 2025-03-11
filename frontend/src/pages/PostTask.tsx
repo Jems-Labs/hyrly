@@ -32,13 +32,12 @@ function PostTask() {
     e.preventDefault();
     setIsLoading(true);
     await postTask(formData);
-    setIsLoading(false)
-  }
+    setIsLoading(false);
+  };
+
   return (
-    <div className="px-10 py-10 w-full flex justify-center">
-      <div className="w-1/2">
-
-
+    <div className="px-4 py-10 w-full flex justify-center">
+      <div className="w-full max-w-2xl">
         <form className="border rounded-md px-6 py-6 flex flex-col gap-5 w-full" onSubmit={handlePostTask}>
           <h1 className="text-2xl font-bold mb-2 text-center">Post a New Task</h1>
           <div className="grid w-full items-center gap-2">
@@ -63,9 +62,9 @@ function PostTask() {
 
           <div className="grid w-full items-center gap-2">
             <Label>Skills Required</Label>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-center gap-2">
               <Input
-                className="h-12 text-lg"
+                className="h-12 text-lg w-full"
                 placeholder="E.g., React, Tailwind, Node.js"
                 value={newSkill}
                 onChange={(e) => setNewSkill(e.target.value)}
@@ -81,6 +80,7 @@ function PostTask() {
                     setNewSkill("");
                   }
                 }}
+                className="w-full sm:w-auto"
               >
                 Add
               </Button>
@@ -96,7 +96,7 @@ function PostTask() {
 
           <div className="grid w-full items-center gap-2">
             <Label>Reward </Label>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               {rewardOptions.map((reward, index) => (
                 <div
                   key={index}
@@ -112,7 +112,7 @@ function PostTask() {
 
           <Button
             disabled={isLoading}
-            className="text-sm px-4 py-2  w-50 mt-5"
+            className="text-sm px-4 py-2 w-full mt-5"
           >
             {isLoading ? (
               <>
@@ -122,7 +122,6 @@ function PostTask() {
               "Post Task"
             )}
           </Button>
-
         </form>
       </div>
     </div>

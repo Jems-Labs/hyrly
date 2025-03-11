@@ -16,43 +16,38 @@ import { Loader2, MessageSquare, Star } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-
-
 function Submission({ submission }: { submission: submissionType }) {
   const [showFullDescription, setShowFullDescription] = useState(false);
-  const [formData, setFormData] = useState({
-    rating: 0,
-    feedback: "",
-  });
+  const [formData, setFormData] = useState({ rating: 0, feedback: "" });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleDescription = () => setShowFullDescription(!showFullDescription);
   const { acceptSubmission, rejectSubmission, addFeedback } = useApp();
-  const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmitFeedback = async () => {
     setIsLoading(true);
     await addFeedback(submission.id, formData);
     setIsLoading(false);
   };
+
   return (
-    <Card className="shadow-md h-auto">
-      <CardContent className="flex flex-col gap-4">
-        <div className="flex justify-between gap-6">
-          <div className="flex flex-col gap-4">
+    <Card className="shadow-md h-auto w-full">
+      <CardContent className="flex flex-col gap-4 p-4">
+        <div className="flex flex-col md:flex-row justify-between gap-6">
+          <div className="flex flex-col gap-4 w-full md:w-1/2">
             <div className="border p-4 rounded-md">
               <h2 className="text-lg font-medium mb-2">Demo Links</h2>
               <div className="flex gap-2 flex-wrap">
-                {submission?.demoLinks.map((link: string, index: number) => {
-                  const formattedLink = link.startsWith("http")
-                    ? link
-                    : `https://${link}`;
+                {submission?.demoLinks.map((link, index) => {
+                  const formattedLink = link.startsWith("http") ? link : `https://${link}`;
                   return (
                     <a
                       key={index}
                       href={formattedLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-3 p-2 w-10 h-10 rounded-md border"
+                      className="flex items-center justify-center p-2 w-10 h-10 rounded-md border"
                     >
                       <img
                         src={getFaviconUrl(formattedLink)}
@@ -64,43 +59,29 @@ function Submission({ submission }: { submission: submissionType }) {
                 })}
               </div>
             </div>
-
             <div className="border p-4 rounded-md">
               <h2 className="text-lg font-medium mb-2">Submitted By</h2>
-              <Link
-                to={`/user/${submission?.userId}`}
-                className="flex items-center gap-3"
-              >
+              <Link to={`/user/${submission?.userId}`} className="flex items-center gap-3">
                 <Avatar className="w-10 h-10">
                   <AvatarFallback>
                     {submission?.user?.firstName[0].toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <h3 className="font-medium">
-                    {submission?.user?.firstName} {submission?.user?.lastName}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {submission?.user?.email}
-                  </p>
+                  <h3 className="font-medium">{submission?.user?.firstName} {submission?.user?.lastName}</h3>
+                  <p className="text-sm text-muted-foreground">{submission?.user?.email}</p>
                 </div>
               </Link>
             </div>
           </div>
 
-          <div className="w-full">
+          <div className="w-full md:w-1/2">
             <h2 className="text-lg font-medium mb-2">Description</h2>
             <p className="text-sm leading-relaxed m-0">
-              {showFullDescription
-                ? submission?.description
-                : `${submission?.description.slice(0, 200)}...`}
+              {showFullDescription ? submission?.description : `${submission?.description.slice(0, 200)}...`}
             </p>
             {submission?.description.length > 50 && (
-              <Button
-                variant="link"
-                className="p-0 text-blue-500 underline"
-                onClick={toggleDescription}
-              >
+              <Button variant="link" className="p-0 text-blue-500 underline" onClick={toggleDescription}>
                 {showFullDescription ? "Show Less" : "Show More"}
               </Button>
             )}
@@ -110,18 +91,10 @@ function Submission({ submission }: { submission: submissionType }) {
         <div className="flex flex-col gap-3 mt-4">
           {submission?.status === "pending" && (
             <div className="flex gap-2 justify-between">
-              <Button
-                variant="destructive"
-                className="w-1/2"
-                onClick={() => rejectSubmission(submission?.id)}
-              >
+              <Button variant="destructive" className="w-1/2" onClick={() => rejectSubmission(submission?.id)}>
                 Reject
               </Button>
-              <Button
-                variant="default"
-                className="w-1/2"
-                onClick={() => acceptSubmission(submission?.id)}
-              >
+              <Button variant="default" className="w-1/2" onClick={() => acceptSubmission(submission?.id)}>
                 Accept
               </Button>
             </div>
@@ -136,23 +109,17 @@ function Submission({ submission }: { submission: submissionType }) {
               Accepted
             </Button>
           )}
+
           {submission?.rating && submission?.feedback ? (
             <div className="border p-4 rounded-md mt-4">
               <h3 className="text-lg font-medium">Your Feedback</h3>
               <div className="flex items-center gap-1 mt-2">
-                <div className="flex items-center gap-1 mt-2">
-                  <div className="flex items-center gap-1 mt-2">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-5 w-5 ${submission?.rating && i < submission.rating ? "text-yellow-500 fill-yellow-500" : "text-gray-300"
-                          }`}
-                      />
-                    ))}
-                  </div>
-
-                </div>
-
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`h-5 w-5 ${submission?.rating && i < submission.rating ? "text-yellow-500 fill-yellow-500" : "text-gray-300"}`}
+                  />
+                ))}
               </div>
               <p className="text-sm mt-2">{submission.feedback}</p>
             </div>
@@ -167,43 +134,20 @@ function Submission({ submission }: { submission: submissionType }) {
                 <DialogHeader>
                   <DialogTitle>Add Feedback</DialogTitle>
                 </DialogHeader>
-
                 <div className="flex gap-2 items-center">
                   <span className="text-sm font-medium">Rating:</span>
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star
                       key={star}
-                      className={`h-6 w-6 cursor-pointer transition ${star <= formData.rating
-                        ? "text-yellow-500 fill-yellow-500"
-                        : "text-gray-300"
-                        }`}
+                      className={`h-6 w-6 cursor-pointer transition ${star <= formData.rating ? "text-yellow-500 fill-yellow-500" : "text-gray-300"}`}
                       onClick={() => setFormData({ ...formData, rating: star })}
                     />
                   ))}
                 </div>
-
                 <label className="text-sm font-medium mt-3">Description:</label>
-                <Textarea
-                  value={formData.feedback}
-                  onChange={(e) =>
-                    setFormData({ ...formData, feedback: e.target.value })
-                  }
-                  placeholder="Write your feedback here..."
-                  className="mt-1"
-                />
-
-                <Button
-                  className="mt-4 w-full"
-                  onClick={handleSubmitFeedback}
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="animate-spin mr-2" /> Submitting...
-                    </>
-                  ) : (
-                    "Submit Feedback"
-                  )}
+                <Textarea value={formData.feedback} onChange={(e) => setFormData({ ...formData, feedback: e.target.value })} placeholder="Write your feedback here..." className="mt-1" />
+                <Button className="mt-4 w-full" onClick={handleSubmitFeedback} disabled={isLoading}>
+                  {isLoading ? <><Loader2 className="animate-spin mr-2" /> Submitting...</> : "Submit Feedback"}
                 </Button>
               </DialogContent>
             </Dialog>

@@ -21,12 +21,17 @@ import Leaderboard from "./pages/Leaderboard";
 import PublicProfile from "./pages/PublicProfile";
 
 function App() {
-  const { fetchUser, fetchMyNotifications } = useApp();
+  const { fetchUser, fetchMyNotifications, user } = useApp();
 
   useEffect(() => {
     fetchUser();
-    fetchMyNotifications();
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      fetchMyNotifications();
+    }
+  }, [user]);
   return (
     <div>
       <Navbar />
@@ -64,8 +69,8 @@ function App() {
         />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/my-submissions" element={<MySubmissions />} />
-        <Route path="/leaderboard" element={<Leaderboard />}/>
-        <Route path="/user/:id" element={<PublicProfile />}/>
+        <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/user/:id" element={<PublicProfile />} />
       </Routes>
       <Toaster position="top-center" />
     </div>

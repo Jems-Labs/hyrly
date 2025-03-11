@@ -13,7 +13,7 @@ function MySubmissions() {
   const { data } = useQuery({
     queryKey: ["my-submissions"],
     queryFn: async () => (await fetchMySubmissions()),
-    staleTime: 6000,
+    staleTime: 12000,
   });
 
   const [showFullDescription, setShowFullDescription] = useState(false);
