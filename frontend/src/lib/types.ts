@@ -1,3 +1,5 @@
+import { NavigateFunction } from "react-router-dom";
+
 export type signupType = {
   firstName: string;
   lastName: string;
@@ -85,8 +87,8 @@ export type notificationType = {
 export type useAppStore = {
   user: User | null;
   notifications: notificationType[];
-  signup: (formData: signupType) => void;
-  login: (formData: loginType) => void;
+  signup: (formData: signupType, navigate: NavigateFunction) => void;
+  login: (formData: loginType, navigate: NavigateFunction) => void;
   fetchUser: () => void;
   logout: () => void;
   addExperience: (formData: addExperienceType) => void;
@@ -116,5 +118,5 @@ export type useAppStore = {
   ) => void;
   fetchMySubmissions: () => Promise<submissionType[]>;
   fetchLeaderboard: () => Promise<User[]>;
-  fetchPublicUser: (id: string | undefined) => Promise<User | null>
+  fetchPublicUser: (id: string | undefined) => Promise<User | null>;
 };

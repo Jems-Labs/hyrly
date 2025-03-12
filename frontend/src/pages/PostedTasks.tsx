@@ -37,7 +37,7 @@ const PostedTask = ({ task }: { task: taskType }) => {
     }
 
     return (
-        <Card className="w-full cursor-pointer">
+        <Card className="w-full cursor-pointer bg-black">
             <CardHeader>
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-sm">
@@ -121,7 +121,7 @@ function PostedTasks() {
     const tasks = data ?? [];
 
     return (
-        <div className="p-8 space-y-6">
+        <div className="p-8 space-y-6 bg-black">
             <h2 className="text-2xl font-bold">Your Posted Tasks</h2>
 
             {tasks?.length > 0 ? (

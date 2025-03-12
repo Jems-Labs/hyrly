@@ -5,10 +5,11 @@ import { Label } from "@/components/ui/label";
 import { useApp } from "@/stores/useApp";
 import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Signup() {
   const { signup } = useApp();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [showform, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -22,47 +23,45 @@ function Signup() {
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    await signup(formData);
+    await signup(formData, navigate);
     setIsLoading(false);
   };
 
   return (
-    <div className="flex items-center justify-center w-full h-screen">
+    <div className="flex items-center justify-center w-full min-h-screen px-4">
       {showform ? (
         <form
-          className="border rounded-md px-4 py-5 w-96 flex flex-col gap-4"
+          className="border rounded-lg px-6 py-8 w-full max-w-lg flex flex-col gap-4 shadow-md"
           onSubmit={handleSignup}
         >
-          <h2 className="text-xl font-semibold text-center">
+          <h2 className="text-2xl font-semibold text-center mb-5">
             Create Your Account
           </h2>
-          <div className="flex gap-2">
-
-         
-          <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="firstName">First Name</Label>
-            <Input
-              type="text"
-              id="firstName"
-              placeholder="eg. John"
-              onChange={(e) =>
-                setFormData({ ...formData, firstName: e.target.value })
-              }
-            />
+          <div className="flex flex-col sm:flex-row gap-2">
+            <div className="w-full">
+              <Label htmlFor="firstName">First Name</Label>
+              <Input
+                type="text"
+                id="firstName"
+                placeholder="eg. John"
+                onChange={(e) =>
+                  setFormData({ ...formData, firstName: e.target.value })
+                }
+              />
+            </div>
+            <div className="w-full">
+              <Label htmlFor="lastName">Last Name</Label>
+              <Input
+                type="text"
+                id="lastName"
+                placeholder="eg. Doe"
+                onChange={(e) =>
+                  setFormData({ ...formData, lastName: e.target.value })
+                }
+              />
+            </div>
           </div>
-          <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="lastName">Last Name</Label>
-            <Input
-              type="text"
-              id="lastName"
-              placeholder="eg. Doe"
-              onChange={(e) =>
-                setFormData({ ...formData, lastName: e.target.value })
-              }
-            />
-          </div>
-          </div>
-          <div className="grid w-full max-w-sm items-center gap-1.5">
+          <div className="w-full">
             <Label htmlFor="email">Email</Label>
             <Input
               type="email"
@@ -73,7 +72,7 @@ function Signup() {
               }
             />
           </div>
-          <div className="grid w-full max-w-sm items-center gap-1.5">
+          <div className="w-full">
             <Label htmlFor="password">Password</Label>
             <Input
               type="password"
@@ -84,11 +83,10 @@ function Signup() {
               }
             />
           </div>
-          <Button disabled={isLoading}>
+          <Button disabled={isLoading} className="w-full">
             {isLoading ? (
               <>
-                {" "}
-                <Loader2 className="animate-spin" />
+                <Loader2 className="animate-spin mr-2" />
                 Signing up...
               </>
             ) : (
@@ -97,10 +95,7 @@ function Signup() {
           </Button>
           <p className="text-center">
             Already have an account?{" "}
-            <Link
-              className="cursor-pointer underline text-blue-400"
-              to="/login"
-            >
+            <Link className="cursor-pointer underline text-blue-500" to="/login">
               Login
             </Link>
           </p>

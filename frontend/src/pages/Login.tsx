@@ -4,10 +4,11 @@ import { Label } from "@/components/ui/label";
 import { useApp } from "@/stores/useApp";
 import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
   const { login } = useApp();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -17,7 +18,7 @@ function Login() {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    await login(formData);
+    await login(formData, navigate);
     setIsLoading(false);
   };
 

@@ -3,30 +3,32 @@ import axios from "axios";
 import { useAppStore } from "@/lib/types";
 import { toast } from "sonner";
 import { BACKEND_URL } from "@/lib/backend_url";
-
 export const useApp = create<useAppStore>((set) => ({
   user: null,
   notifications: [],
-  signup: async (formData) => {
+  signup: async (formData, navigate) => {
     try {
       const res = await axios.post(`${BACKEND_URL}/api/user/signup`, formData, {
         withCredentials: true,
       });
       if (res.status === 200) {
         toast.success(res.data.msg);
+        navigate("/login");
       }
     } catch (error) {
       toast.error("Signup Failed");
     }
   },
-  login: async (formData) => {
+  login: async (formData, navigate) => {
     try {
       const res = await axios.post(`${BACKEND_URL}/api/user/login`, formData, {
         withCredentials: true,
       });
       if (res.status === 200) {
         toast.success("Logged In");
+        navigate("/find-task");
         set({ user: res.data });
+        
       }
     } catch (error) {
       toast.error("Login Failed");
