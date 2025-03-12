@@ -72,7 +72,7 @@ function Navbar() {
                 <div className="flex items-center gap-1 cursor-pointer">
                   <Avatar className="cursor-pointer w-10 h-10">
                     <AvatarFallback>
-                      {user?.firstName[0].toUpperCase()}
+                      {user?.firstName ? user.firstName[0].toUpperCase() : "U"}
                     </AvatarFallback>
                   </Avatar>
                   <ChevronDown size={16} />
