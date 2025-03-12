@@ -38,7 +38,7 @@ function Signup() {
             Create Your Account
           </h2>
           <div className="flex flex-col sm:flex-row gap-2">
-            <div className="w-full">
+            <div className="w-full flex flex-col gap-2">
               <Label htmlFor="firstName">First Name</Label>
               <Input
                 type="text"
@@ -49,7 +49,7 @@ function Signup() {
                 }
               />
             </div>
-            <div className="w-full">
+            <div className="w-full  flex flex-col gap-2">
               <Label htmlFor="lastName">Last Name</Label>
               <Input
                 type="text"
@@ -61,7 +61,7 @@ function Signup() {
               />
             </div>
           </div>
-          <div className="w-full">
+          <div className="w-full  flex flex-col gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
               type="email"
@@ -72,7 +72,7 @@ function Signup() {
               }
             />
           </div>
-          <div className="w-full">
+          <div className="w-full flex flex-col gap-2">
             <Label htmlFor="password">Password</Label>
             <Input
               type="password"
