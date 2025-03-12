@@ -1,5 +1,5 @@
 const isBackendDeployed = true;
 
 export const BACKEND_URL = isBackendDeployed
-  ? import.meta.env.VITE_BACKEND_URL
+  ? "https://hyrly-backend.isonikrish.workers.dev"
   : "http://localhost:8787";
