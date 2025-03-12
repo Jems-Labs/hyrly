@@ -1,4 +1,4 @@
-const isBackendDeployed = false;
+const isBackendDeployed = true;
 
 export const BACKEND_URL = isBackendDeployed
   ? import.meta.env.VITE_BACKEND_URL
