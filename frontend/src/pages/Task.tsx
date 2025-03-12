@@ -1,7 +1,7 @@
 import { useApp } from "@/stores/useApp";
 import { useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
-import { CalendarDays, Flag, Star, Trophy } from "lucide-react";
+import { CalendarDays, Flag, Trophy } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
