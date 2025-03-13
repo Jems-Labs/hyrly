@@ -20,28 +20,28 @@ const steps = [
     color: "text-blue-400",
     bgColor: "from-blue-400 to-blue-400/50",
     title: "Sign Up",
-    desc: "Create an account and set up your profile in minutes.",
+    desc: "Create an account and set up your profile in minutes",
   },
   {
     icon: FileText,
     color: "text-green-400",
     bgColor: "from-green-400 to-green-400/50",
     title: "Post a Task",
-    desc: "Define task details and compensation clearly.",
+    desc: "Define task details and compensation clearly",
   },
   {
     icon: CheckCircle,
     color: "text-yellow-400",
     bgColor: "from-yellow-400 to-yellow-400/50",
     title: "Make a Decision",
-    desc: "Review submissions and choose the best talent.",
+    desc: "Review submissions and choose the best talent",
   },
   {
     icon: Star,
     color: "text-purple-400",
     bgColor: "from-purple-400 to-purple-400/50",
     title: "Rate & Review",
-    desc: "Provide feedback to help the community grow.",
+    desc: "Provide feedback to help the community grow",
   },
 ];
 
