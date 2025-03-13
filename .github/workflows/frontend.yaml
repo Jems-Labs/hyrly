@@ -1,9 +1,11 @@
-name: Frontend CI
+name: Frontend Deployment
 
 on:
   push:
     branches:
       - main
+    paths: 
+      - 'frontend/**'
   pull_request:
 
 jobs:
