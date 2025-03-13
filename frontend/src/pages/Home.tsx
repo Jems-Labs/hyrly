@@ -81,7 +81,7 @@ function Home() {
 
           <p className="text-lg text-gray-400 mb-6">
             Connect with top talent through real tasks. Post, submit, and decide
-            seamlessly!
+            seamlessly.
           </p>
           <Button
             className="rounded-full py-5 px-5"
