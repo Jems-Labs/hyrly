@@ -27,7 +27,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: backend  # ✅ Ensures commands run inside `backend`
-        run: npm install
+        run: npm install --no-package-lock
 
       - name: Generate Prisma client
         working-directory: backend
@@ -50,7 +50,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: backend
-        run: npm install
+        run: npm install --no-package-lock
 
       - name: Apply Prisma Migrations
         working-directory: backend
@@ -63,6 +63,9 @@ jobs:
         run: npx prisma generate --no-engine
         env:
           DATABASE_URL: ${{ secrets.ACCELERATE_DATABASE_URL }}
+      - name: Install Wrangler CLI
+        working-directory: backend
+        run: npm install -g wrangler
 
       - name: Deploy to Cloudflare Workers
         working-directory: backend
