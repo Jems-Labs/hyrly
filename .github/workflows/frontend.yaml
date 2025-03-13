@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
-    paths: 
-      - 'frontend/**'
+    paths:
+      - "frontend/**"  # ✅ Runs only when frontend changes
   pull_request:
+    paths:
+      - "frontend/**"
 
 jobs:
   ci:
@@ -24,7 +26,9 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
+        working-directory: frontend  # ✅ Run inside the frontend directory
         run: npm install
-        
+
       - name: Run Build
+        working-directory: frontend
         run: npm run build
