@@ -49,22 +49,22 @@ const features = [
   {
     icon: User,
     title: "Seamless Profile Management",
-    desc: "Easily update your profile to showcase your skills and expertise.",
+    desc: "Easily update your profile to showcase your skills and expertise",
   },
   {
     icon: ClipboardList,
     title: "Effortless Task Posting",
-    desc: "Post tasks quickly with clear details and expectations.",
+    desc: "Post tasks quickly with clear details and expectations",
   },
   {
     icon: Send,
     title: "Streamlined Task Submission",
-    desc: "Submit work seamlessly and track progress.",
+    desc: "Submit work seamlessly and track progress",
   },
   {
     icon: Trophy,
     title: "Dynamic Leaderboard",
-    desc: "Gain recognition and climb the ranks with successful task completions.",
+    desc: "Gain recognition and climb the ranks with successful task completions",
   },
 ];
 
