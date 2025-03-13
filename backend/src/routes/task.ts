@@ -16,7 +16,7 @@ taskRoutes.post("/post", protectRoute, isUserClient, handlePostTask);
 taskRoutes.get("/my-posted-tasks", protectRoute, handleGetMyPostedTasks);
 taskRoutes.put("/change-task-status/:id", protectRoute, handleUpdateTaskStatus);
 taskRoutes.delete("/delete-task/:id", protectRoute, handleDeleteTask);
-taskRoutes.get("/open-tasks", protectRoute, handleGetOpenTasks);
+taskRoutes.get("/open-tasks", handleGetOpenTasks);
 taskRoutes.get("/get-task/:id", protectRoute, handleGetTask);
 
 export default taskRoutes;
