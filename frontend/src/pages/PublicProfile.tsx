@@ -37,13 +37,9 @@ function PublicProfile() {
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-5">
               <Avatar className="w-32 h-32">
-                {isLoading ? (
-                  <Skeleton className="w-32 h-32 rounded-full" />
-                ) : (
-                  <AvatarFallback className="w-32 h-32 text-4xl">
-                    {data?.firstName?.[0]}
-                  </AvatarFallback>
-                )}
+                <AvatarFallback className="w-32 h-32 text-4xl">
+                  {isLoading ? <Skeleton className="w-32 h-32 rounded-full" /> : data?.firstName?.[0]}
+                </AvatarFallback>
               </Avatar>
 
               <div>
@@ -60,12 +56,13 @@ function PublicProfile() {
                   data?.points !== undefined && (
                     <div className="flex items-center gap-2 mt-2">
                       <span
-                        className={`px-3 py-1 text-sm font-semibold text-white rounded-full shadow-md ${data.points >= 300
-                          ? "bg-yellow-500"
-                          : data.points >= 100
+                        className={`px-3 py-1 text-sm font-semibold text-white rounded-full shadow-md ${
+                          data.points >= 300
+                            ? "bg-yellow-500"
+                            : data.points >= 100
                             ? "bg-gray-400"
                             : "bg-orange-400"
-                          }`}
+                        }`}
                       >
                         {data.points.toLocaleString()} Points
                       </span>
@@ -134,6 +131,7 @@ function PublicProfile() {
                         ? task.description
                         : `${task.description.slice(0, 200)}...`}
                     </p>
+
                     {task.description.length > 200 && (
                       <Button
                         variant="link"

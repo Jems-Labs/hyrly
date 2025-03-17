@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Badge } from "./ui/badge";
+import SearchBar from "./SearchBar";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -37,8 +38,9 @@ function Navbar() {
               return (
                 <Link
                   key={index}
-                  className={`relative cursor-pointer transition-all duration-300 hover:underline ${isActive ? "text-[#18cb96]" : ""
-                    }`}
+                  className={`relative cursor-pointer transition-all duration-300 hover:underline ${
+                    isActive ? "text-[#18cb96]" : ""
+                  }`}
                   to={link}
                 >
                   {value}
@@ -51,6 +53,9 @@ function Navbar() {
       <div className="flex items-center gap-5">
         {user ? (
           <>
+            <div className="hidden lg:block">
+              <SearchBar />
+            </div>
             {user.role === "client" && (
               <Button
                 onClick={() => navigate("/post-task")}
@@ -127,10 +132,18 @@ function Navbar() {
           </PopoverTrigger>
           <PopoverContent className="md:hidden w-[200px] p-4 shadow-lg border rounded-md">
             <ul className="flex flex-col text-md font-normal">
-              <Link to="/find-task" onClick={() => setMenuOpen(false)} className="border-b py-3">
+              <Link
+                to="/find-task"
+                onClick={() => setMenuOpen(false)}
+                className="border-b py-3"
+              >
                 Find Task
               </Link>
-              <Link to="/leaderboard" onClick={() => setMenuOpen(false)} className="border-b py-3">
+              <Link
+                to="/leaderboard"
+                onClick={() => setMenuOpen(false)}
+                className="border-b py-3"
+              >
                 Leaderboard
               </Link>
               {user && user.role === "client" && (
@@ -149,10 +162,7 @@ function Navbar() {
                   <Button onClick={() => navigate("/signup")}>Signup</Button>
                 </div>
               ) : (
-                <Button
-                  onClick={logout}
-                  variant={"outline"}
-                >
+                <Button onClick={logout} variant={"outline"}>
                   <LogOut className="w-4 h-4" /> Logout
                 </Button>
               )}

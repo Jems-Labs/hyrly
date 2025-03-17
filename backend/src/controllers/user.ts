@@ -6,7 +6,7 @@ import {
   profileUpdateSchema,
   signupSchema,
 } from "../utils/zodSchemas";
-import bcrypt, { truncates } from "bcryptjs";
+import bcrypt from "bcryptjs";
 import { generateTokenAndSetCookie, removeToken } from "../utils/generateToken";
 export async function handleUserSignup(c: Context) {
   const prisma = prismaClient(c);
@@ -345,8 +345,36 @@ export async function handleGetPublicUser(c: Context) {
       },
     });
 
-    if (!user) return c.json({ success: false, msg: "User doesn't exists" }, 400);
-    return c.json({success: true, user}, 200);
+    if (!user)
+      return c.json({ success: false, msg: "User doesn't exists" }, 400);
+    return c.json({ success: true, user }, 200);
+  } catch (error) {
+    return c.json({ success: false, msg: "Internal Server Error" }, 500);
+  }
+}
+export async function handleGetUser(c: Context) {
+  const prisma = prismaClient(c);
+  const query = c.req.query("query");
+
+  try {
+    if (!query || query.trim() === "") {
+      return c.json({ success: false, msg: "No query found" }, 404);
+    }
+
+    const users = await prisma.user.findMany({
+      where: {
+        OR: [
+          { firstName: { contains: query, mode: "insensitive" } },
+          { lastName: { contains: query, mode: "insensitive" } },
+        ],
+      },
+    });
+
+    if (users.length === 0) {
+      return c.json({ success: false, msg: "No user found" }, 404);
+    }
+
+    return c.json({ success: true, users }, 200);
   } catch (error) {
     return c.json({ success: false, msg: "Internal Server Error" }, 500);
   }

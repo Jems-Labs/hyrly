@@ -4,11 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useApp } from "@/stores/useApp";
 import { Loader2 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 function Signup() {
-  const { signup } = useApp();
+  const { signup, user } = useApp();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [showform, setShowForm] = useState(false);
@@ -26,6 +26,12 @@ function Signup() {
     await signup(formData, navigate);
     setIsLoading(false);
   };
+
+  useEffect(()=>{
+    if(user){
+      navigate("/find-task")
+    }
+  },[user])
 
   return (
     <div className="flex items-center justify-center w-full min-h-screen px-4">

@@ -119,4 +119,5 @@ export type useAppStore = {
   fetchMySubmissions: () => Promise<submissionType[]>;
   fetchLeaderboard: () => Promise<User[]>;
   fetchPublicUser: (id: string | undefined) => Promise<User | null>;
+  searchUser: (query: string) => Promise<User[] | null>
 };

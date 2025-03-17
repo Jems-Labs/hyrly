@@ -7,6 +7,7 @@ import {
   handleGetLeaderboard,
   handleGetMyNotifications,
   handleGetPublicUser,
+  handleGetUser,
   handleUpdateExperience,
   handleUpdateProfile,
   handleUserLogin,
@@ -33,6 +34,6 @@ userRoutes.get("/notifications", protectRoute, handleGetMyNotifications);
 userRoutes.delete("/notification/:id", protectRoute, handleDeleteNotification);
 userRoutes.get("/leaderboard", protectRoute, handleGetLeaderboard);
 userRoutes.get("/public-user/:id", protectRoute, handleGetPublicUser);
-
+userRoutes.get("/search-user", protectRoute, handleGetUser);
 
 export default userRoutes;

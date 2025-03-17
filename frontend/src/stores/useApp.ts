@@ -359,5 +359,18 @@ export const useApp = create<useAppStore>((set) => ({
     } catch (error) {
       return null
     }
+  },
+  searchUser: async (query) => {
+    try {
+      const res = await axios.get(`${BACKEND_URL}/api/user/search-user?query=${query}`, {
+        withCredentials: true
+      });
+
+      if(res.data.success === true){
+        return res.data.users;
+      }
+    } catch (error) {
+      return null;
+    }
   }
 }));

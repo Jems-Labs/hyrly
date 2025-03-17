@@ -3,11 +3,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useApp } from "@/stores/useApp";
 import { Loader2 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
-  const { login } = useApp();
+  const { login, user } = useApp();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -21,7 +21,11 @@ function Login() {
     await login(formData, navigate);
     setIsLoading(false);
   };
-
+  useEffect(() => {
+    if (user) {
+      navigate("/find-task")
+    }
+  }, [user])
   return (
     <div className="flex items-center justify-center w-full h-screen">
       <form
@@ -29,7 +33,7 @@ function Login() {
         onSubmit={handleLogin}
       >
         <h2 className="text-xl font-semibold text-center">Login to Your Account</h2>
-        
+
         <div className="grid w-full max-w-sm items-center gap-1.5">
           <Label htmlFor="email">Email</Label>
           <Input
